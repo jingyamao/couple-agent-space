@@ -87,5 +87,6 @@ npm run db:deploy
 
 - [需求分析](./docs/requirements-analysis.md)
 - [开发计划](./docs/development-roadmap.md)
+- [后端后续工作](./docs/backend-next-steps.md)
 - [API 说明](./docs/api.md)
 - [GitHub 工作流](./docs/github-workflow.md)
