@@ -15,6 +15,8 @@ const agentIntentSchema = z.enum([
 export const relationshipAgentRequestSchema = z.object({
   intent: agentIntentSchema.default("daily_care"),
   message: z.string().min(1).max(2000),
+  coupleId: z.string().min(1).max(128).optional(),
+  userId: z.string().min(1).max(128).optional(),
   context: z
     .object({
       relationshipDays: z.number().int().nonnegative().optional(),

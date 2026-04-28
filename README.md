@@ -17,7 +17,9 @@
 
 ```bash
 npm install
+createdb couple_agent_dev
 npm run db:generate
+npm run db:migrate
 npm run dev
 ```
 
@@ -28,15 +30,30 @@ npm run dev
 复制 `.env.example` 为 `.env`，并按需修改：
 
 ```bash
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/couple_agent_dev?schema=public"
+DATABASE_URL="postgresql://jiangyuming@localhost:5432/couple_agent_dev?schema=public"
 OPENAI_API_KEY=""
 OPENAI_MODEL="gpt-4.1-mini"
 ```
 
 没有 `OPENAI_API_KEY` 时，关系助手 Agent 会使用本地 fallback，方便开发阶段直接体验。
 
+## 数据库
+
+本地开发默认使用 Homebrew PostgreSQL 当前系统用户连接：
+
+```bash
+DATABASE_URL="postgresql://jiangyuming@localhost:5432/couple_agent_dev?schema=public"
+```
+
+如果数据库已存在，`createdb couple_agent_dev` 会提示重复，可直接跳过。生产环境可以使用：
+
+```bash
+npm run db:deploy
+```
+
 ## 重要文档
 
 - [需求分析](./docs/requirements-analysis.md)
 - [开发计划](./docs/development-roadmap.md)
+- [API 说明](./docs/api.md)
 - [GitHub 工作流](./docs/github-workflow.md)

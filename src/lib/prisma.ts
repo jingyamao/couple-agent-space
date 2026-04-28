@@ -7,7 +7,7 @@ const globalForPrisma = globalThis as unknown as {
 
 const connectionString =
   process.env.DATABASE_URL ??
-  "postgresql://postgres:postgres@localhost:5432/couple_agent_dev?schema=public";
+  "postgresql://jiangyuming@localhost:5432/couple_agent_dev?schema=public";
 
 export const prisma =
   globalForPrisma.prisma ??
