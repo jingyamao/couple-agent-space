@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/prisma";
+import { getAgentModelRuntimeInfo } from "@/lib/ai/model-provider";
 
 export function GET() {
+  const ai = getAgentModelRuntimeInfo();
+
   return prisma
     .$queryRaw`select 1 as ok`
     .then(() =>
@@ -11,7 +14,7 @@ export function GET() {
         checks: {
           app: "ready",
           database: "ready",
-          ai: process.env.OPENAI_API_KEY ? "configured" : "fallback"
+          ai
         }
       })
     )
@@ -24,7 +27,7 @@ export function GET() {
           checks: {
             app: "ready",
             database: "error",
-            ai: process.env.OPENAI_API_KEY ? "configured" : "fallback"
+            ai
           },
           error: error instanceof Error ? error.message : "Database unavailable"
         },

@@ -20,6 +20,17 @@
 | GET | `/api/health` | 应用与数据库健康检查 |
 | POST | `/api/agents/relationship` | 关系助手 Agent，支持 fallback 与调用日志 |
 
+当前 Agent 可通过环境变量切换模型 provider。DeepSeek 配置：
+
+```bash
+AI_PROVIDER="deepseek"
+DEEPSEEK_BASE_URL="https://api.deepseek.com"
+DEEPSEEK_MODEL="deepseek-v4-pro"
+DEEPSEEK_API_KEY=""
+DEEPSEEK_THINKING_TYPE="enabled"
+DEEPSEEK_REASONING_EFFORT="high"
+```
+
 ## 用户与情侣空间
 
 | 方法 | 路径 | 说明 |

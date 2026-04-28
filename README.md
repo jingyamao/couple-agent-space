@@ -48,6 +48,27 @@ OPENAI_MODEL="gpt-4.1-mini"
 
 认证成功后服务端会设置 HttpOnly Cookie，业务 API 会优先从会话中识别当前用户。开发环境保留 `x-user-id` / `?userId=` 作为调试旁路，生产环境会自动关闭。
 
+## AI Agent
+
+当前 Agent 支持 DeepSeek OpenAI-compatible 接口：
+
+```bash
+AI_PROVIDER="deepseek"
+DEEPSEEK_BASE_URL="https://api.deepseek.com"
+DEEPSEEK_MODEL="deepseek-v4-pro"
+DEEPSEEK_API_KEY=""
+DEEPSEEK_THINKING_TYPE="enabled"
+DEEPSEEK_REASONING_EFFORT="high"
+```
+
+`DEEPSEEK_API_KEY` 只放在本地 `.env` 或部署平台密钥中，不提交到 Git。手动验证 DeepSeek 调用：
+
+```bash
+npm run test:agent:deepseek
+```
+
+这个脚本只发起一次短输入请求，用于确认 provider 与 Agent 链路可用。
+
 ## 数据库
 
 本地开发默认使用 Homebrew PostgreSQL 当前系统用户连接：

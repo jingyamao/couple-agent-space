@@ -1,6 +1,5 @@
-import { openai } from "@ai-sdk/openai";
-import { generateText } from "ai";
 import { z } from "zod";
+import { generateAgentText } from "@/lib/ai/model-provider";
 
 const agentIntentSchema = z.enum([
   "daily_care",
@@ -38,6 +37,8 @@ export type RelationshipAgentResult = {
   reply: string;
   quickActions: string[];
   safetyNote?: string;
+  provider?: string;
+  model?: string;
 };
 
 const SYSTEM_PROMPT = [
@@ -96,7 +97,14 @@ export async function runRelationshipAgent(
     ? "如果存在现实暴力、自伤或被控制风险，请优先离开危险环境，并联系可信赖的人、当地紧急服务或专业机构。"
     : undefined;
 
-  if (!process.env.OPENAI_API_KEY) {
+  const modelResult = await generateAgentText({
+    system: SYSTEM_PROMPT,
+    prompt: buildPrompt(input),
+    temperature: 0.6,
+    maxTokens: 220
+  }).catch(() => null);
+
+  if (!modelResult) {
     return {
       status: "fallback",
       intent: input.intent,
@@ -107,19 +115,14 @@ export async function runRelationshipAgent(
   }
 
   try {
-    const result = await generateText({
-      model: openai(process.env.OPENAI_MODEL ?? "gpt-4.1-mini"),
-      system: SYSTEM_PROMPT,
-      prompt: buildPrompt(input),
-      temperature: 0.6
-    });
-
     return {
       status: "success",
       intent: input.intent,
-      reply: result.text,
+      reply: modelResult.text,
       quickActions: quickActions[input.intent],
-      safetyNote
+      safetyNote,
+      provider: modelResult.provider,
+      model: modelResult.model
     };
   } catch {
     return {
