@@ -1,0 +1,213 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum CoupleRole {
+  OWNER
+  PARTNER
+}
+
+enum Visibility {
+  PRIVATE
+  PARTNER
+  SHARED
+}
+
+enum MoodEnergy {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum WishStatus {
+  IDEA
+  PLANNED
+  DONE
+  PAUSED
+}
+
+enum TimeCapsuleStatus {
+  LOCKED
+  OPENED
+}
+
+enum AgentRunStatus {
+  SUCCESS
+  FALLBACK
+  ERROR
+}
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  name         String
+  avatarUrl    String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  memberships  CoupleMember[]
+  diaryEntries DiaryEntry[]
+  moodCheckIns MoodCheckIn[]
+  wishes       Wish[]         @relation("WishCreator")
+  photos       Photo[]
+  agentRuns    AgentRun[]
+}
+
+model Couple {
+  id            String          @id @default(cuid())
+  inviteCode    String          @unique
+  title         String          @default("我们的空间")
+  startedAt     DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  members       CoupleMember[]
+  anniversaries Anniversary[]
+  diaryEntries  DiaryEntry[]
+  moodCheckIns  MoodCheckIn[]
+  wishes        Wish[]
+  photos        Photo[]
+  timeCapsules  TimeCapsule[]
+  agentMemories AgentMemory[]
+  agentRuns     AgentRun[]
+}
+
+model CoupleMember {
+  id        String     @id @default(cuid())
+  userId    String
+  coupleId  String
+  role      CoupleRole @default(PARTNER)
+  joinedAt  DateTime   @default(now())
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  couple    Couple     @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, coupleId])
+  @@index([coupleId])
+}
+
+model Anniversary {
+  id          String   @id @default(cuid())
+  coupleId    String
+  title       String
+  happenedAt  DateTime
+  remindDays  Int[]    @default([30, 7, 1])
+  note        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  couple      Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId, happenedAt])
+}
+
+model DiaryEntry {
+  id          String     @id @default(cuid())
+  coupleId    String
+  authorId    String
+  title       String
+  content     String
+  visibility  Visibility @default(SHARED)
+  happenedAt  DateTime   @default(now())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  couple      Couple     @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId, happenedAt])
+  @@index([authorId])
+}
+
+model MoodCheckIn {
+  id             String     @id @default(cuid())
+  coupleId       String
+  userId         String
+  mood           String
+  energy         MoodEnergy @default(MEDIUM)
+  stressLevel    Int        @default(3)
+  carePreference String?
+  note           String?
+  checkedAt      DateTime   @default(now())
+  couple         Couple     @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId, checkedAt])
+  @@index([userId, checkedAt])
+}
+
+model Wish {
+  id          String     @id @default(cuid())
+  coupleId    String
+  creatorId   String
+  title       String
+  category    String
+  status      WishStatus @default(IDEA)
+  targetAt    DateTime?
+  budgetCents Int?
+  note        String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  couple      Couple     @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  creator     User       @relation("WishCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId, status])
+  @@index([creatorId])
+}
+
+model Photo {
+  id          String   @id @default(cuid())
+  coupleId    String
+  uploaderId  String
+  url         String
+  title       String?
+  event       String?
+  takenAt     DateTime?
+  createdAt   DateTime @default(now())
+  couple      Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  uploader    User     @relation(fields: [uploaderId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId, takenAt])
+}
+
+model TimeCapsule {
+  id          String            @id @default(cuid())
+  coupleId    String
+  title       String
+  content     String
+  unlockAt    DateTime
+  status      TimeCapsuleStatus @default(LOCKED)
+  openedAt    DateTime?
+  createdAt   DateTime          @default(now())
+  couple      Couple            @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId, unlockAt])
+}
+
+model AgentMemory {
+  id        String   @id @default(cuid())
+  coupleId  String
+  key       String
+  value     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  couple    Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+
+  @@unique([coupleId, key])
+}
+
+model AgentRun {
+  id        String         @id @default(cuid())
+  coupleId  String?
+  userId    String?
+  intent    String
+  input     Json
+  output    Json
+  status    AgentRunStatus @default(SUCCESS)
+  createdAt DateTime       @default(now())
+  couple    Couple?        @relation(fields: [coupleId], references: [id], onDelete: SetNull)
+  user      User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([coupleId, createdAt])
+  @@index([userId, createdAt])
+}

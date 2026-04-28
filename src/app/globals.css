@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fbfaf8;
+  --foreground: #24201c;
+  --muted: #f1efeb;
+  --muted-foreground: #716a61;
+  --border: #ded8d0;
+  --primary: #c23b4a;
+  --primary-foreground: #fff7f8;
+  --secondary: #196f75;
+  --secondary-foreground: #f4ffff;
+  --accent: #e7aa2e;
+  --accent-foreground: #251a05;
+  --surface: #ffffff;
+  --surface-strong: #f7f3ed;
+  --ring: #c23b4a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    linear-gradient(180deg, rgba(251, 250, 248, 0.96), rgba(247, 243, 237, 0.92)),
+    var(--background);
+  color: var(--foreground);
+  font-family:
+    var(--font-geist-sans),
+    "PingFang SC",
+    "Microsoft YaHei",
+    Arial,
+    sans-serif;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(194, 59, 74, 0.18);
+}
