@@ -6,7 +6,11 @@ import {
   ok,
   parseOptionalJson
 } from "@/lib/api/http";
-import { getRequesterId, requireCoupleMember } from "@/lib/api/guards";
+import {
+  getRequesterId,
+  requireCoupleMember,
+  resolveActorId
+} from "@/lib/api/guards";
 import {
   anniversaryUpdateSchema,
   deleteWithUserSchema
@@ -34,7 +38,7 @@ async function requireAnniversary(coupleId: string, anniversaryId: string) {
 export async function GET(request: Request, context: RouteContext) {
   try {
     const { coupleId, anniversaryId } = await context.params;
-    await requireCoupleMember(coupleId, getRequesterId(request));
+    await requireCoupleMember(coupleId, await getRequesterId(request));
     const anniversary = await requireAnniversary(coupleId, anniversaryId);
 
     return ok(anniversary);
@@ -47,7 +51,7 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const { coupleId, anniversaryId } = await context.params;
     const input = await parseOptionalJson(request, anniversaryUpdateSchema, {});
-    await requireCoupleMember(coupleId, input.userId ?? getRequesterId(request));
+    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
     await requireAnniversary(coupleId, anniversaryId);
 
     const anniversary = await prisma.anniversary.update({
@@ -70,7 +74,7 @@ export async function DELETE(request: Request, context: RouteContext) {
   try {
     const { coupleId, anniversaryId } = await context.params;
     const input = await parseOptionalJson(request, deleteWithUserSchema, {});
-    await requireCoupleMember(coupleId, input.userId ?? getRequesterId(request));
+    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
     await requireAnniversary(coupleId, anniversaryId);
     await prisma.anniversary.delete({
       where: { id: anniversaryId }

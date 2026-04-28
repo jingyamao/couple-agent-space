@@ -6,7 +6,11 @@ import {
   ok,
   parseOptionalJson
 } from "@/lib/api/http";
-import { getRequesterId, requireCoupleMember } from "@/lib/api/guards";
+import {
+  getRequesterId,
+  requireCoupleMember,
+  resolveActorId
+} from "@/lib/api/guards";
 import {
   deleteWithUserSchema,
   timeCapsuleUpdateSchema
@@ -47,7 +51,7 @@ async function requireTimeCapsule(coupleId: string, timeCapsuleId: string) {
 export async function GET(request: Request, context: RouteContext) {
   try {
     const { coupleId, timeCapsuleId } = await context.params;
-    await requireCoupleMember(coupleId, getRequesterId(request));
+    await requireCoupleMember(coupleId, await getRequesterId(request));
     const capsule = await requireTimeCapsule(coupleId, timeCapsuleId);
 
     return ok(hideLockedContent(capsule));
@@ -60,7 +64,7 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const { coupleId, timeCapsuleId } = await context.params;
     const input = await parseOptionalJson(request, timeCapsuleUpdateSchema, {});
-    await requireCoupleMember(coupleId, input.userId ?? getRequesterId(request));
+    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
     await requireTimeCapsule(coupleId, timeCapsuleId);
 
     const capsule = await prisma.timeCapsule.update({
@@ -82,7 +86,7 @@ export async function DELETE(request: Request, context: RouteContext) {
   try {
     const { coupleId, timeCapsuleId } = await context.params;
     const input = await parseOptionalJson(request, deleteWithUserSchema, {});
-    await requireCoupleMember(coupleId, input.userId ?? getRequesterId(request));
+    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
     await requireTimeCapsule(coupleId, timeCapsuleId);
     await prisma.timeCapsule.delete({
       where: { id: timeCapsuleId }

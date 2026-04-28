@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { handleApiError, noContent, ok, parseJson } from "@/lib/api/http";
-import { requireUser } from "@/lib/api/guards";
+import { requireSelf } from "@/lib/api/guards";
 import { userUpdateSchema } from "@/lib/api/schemas";
 
 type RouteContext = {
@@ -12,6 +12,7 @@ type RouteContext = {
 export async function GET(_request: Request, context: RouteContext) {
   try {
     const { userId } = await context.params;
+    await requireSelf(_request, userId);
     const user = await prisma.user.findUnique({
       where: { id: userId },
       include: {
@@ -32,7 +33,7 @@ export async function GET(_request: Request, context: RouteContext) {
 export async function PATCH(request: Request, context: RouteContext) {
   try {
     const { userId } = await context.params;
-    await requireUser(userId);
+    await requireSelf(request, userId);
     const input = await parseJson(request, userUpdateSchema);
     const user = await prisma.user.update({
       where: { id: userId },
@@ -48,7 +49,7 @@ export async function PATCH(request: Request, context: RouteContext) {
 export async function DELETE(_request: Request, context: RouteContext) {
   try {
     const { userId } = await context.params;
-    await requireUser(userId);
+    await requireSelf(_request, userId);
     await prisma.user.delete({
       where: { id: userId }
     });

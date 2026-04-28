@@ -1,12 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { createUniqueInviteCode } from "@/lib/api/invite-code";
 import { created, handleApiError, ok, parseJson } from "@/lib/api/http";
-import { getRequesterId, requireUser } from "@/lib/api/guards";
+import { getRequesterId, requireUser, resolveActorId } from "@/lib/api/guards";
 import { coupleCreateSchema } from "@/lib/api/schemas";
 
 export async function GET(request: Request) {
   try {
-    const userId = getRequesterId(request);
+    const userId = await getRequesterId(request);
     await requireUser(userId);
 
     const memberships = await prisma.coupleMember.findMany({
@@ -34,7 +34,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const input = await parseJson(request, coupleCreateSchema);
-    await requireUser(input.ownerId);
+    const ownerId = await resolveActorId(request, input.ownerId);
 
     const couple = await prisma.$transaction(async (tx) => {
       const createdCouple = await tx.couple.create({
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
       await tx.coupleMember.create({
         data: {
           coupleId: createdCouple.id,
-          userId: input.ownerId,
+          userId: ownerId,
           role: "OWNER"
         }
       });

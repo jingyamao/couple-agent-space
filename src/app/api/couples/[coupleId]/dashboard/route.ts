@@ -18,7 +18,7 @@ function getDaysTogether(startedAt: Date | null) {
 export async function GET(request: Request, context: RouteContext) {
   try {
     const { coupleId } = await context.params;
-    const userId = getRequesterId(request);
+    const userId = await getRequesterId(request);
     await requireCoupleMember(coupleId, userId);
 
     const [

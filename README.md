@@ -37,6 +37,17 @@ OPENAI_MODEL="gpt-4.1-mini"
 
 没有 `OPENAI_API_KEY` 时，关系助手 Agent 会使用本地 fallback，方便开发阶段直接体验。
 
+## 认证
+
+系统已内置邮箱密码认证：
+
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `POST /api/auth/logout`
+- `GET /api/auth/me`
+
+认证成功后服务端会设置 HttpOnly Cookie，业务 API 会优先从会话中识别当前用户。开发环境保留 `x-user-id` / `?userId=` 作为调试旁路，生产环境会自动关闭。
+
 ## 数据库
 
 本地开发默认使用 Homebrew PostgreSQL 当前系统用户连接：

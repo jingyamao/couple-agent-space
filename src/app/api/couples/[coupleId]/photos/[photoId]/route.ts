@@ -6,7 +6,7 @@ import {
   ok,
   parseOptionalJson
 } from "@/lib/api/http";
-import { getRequesterId, requireCoupleMember } from "@/lib/api/guards";
+import { requireCoupleMember, resolveActorId } from "@/lib/api/guards";
 import { deleteWithUserSchema, photoUpdateSchema } from "@/lib/api/schemas";
 
 type RouteContext = {
@@ -32,7 +32,7 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const { coupleId, photoId } = await context.params;
     const input = await parseOptionalJson(request, photoUpdateSchema, {});
-    await requireCoupleMember(coupleId, input.userId ?? getRequesterId(request));
+    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
     await requirePhoto(coupleId, photoId);
 
     const photo = await prisma.photo.update({
@@ -56,7 +56,7 @@ export async function DELETE(request: Request, context: RouteContext) {
   try {
     const { coupleId, photoId } = await context.params;
     const input = await parseOptionalJson(request, deleteWithUserSchema, {});
-    await requireCoupleMember(coupleId, input.userId ?? getRequesterId(request));
+    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
     await requirePhoto(coupleId, photoId);
     await prisma.photo.delete({
       where: { id: photoId }

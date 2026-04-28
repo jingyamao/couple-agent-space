@@ -17,6 +17,7 @@ export const paginationSchema = z.object({
 export const userCreateSchema = z.object({
   email: z.string().email().max(255),
   name: z.string().min(1).max(80),
+  password: z.string().min(8).max(128),
   avatarUrl: z.string().url().max(1000).optional()
 });
 
@@ -25,14 +26,21 @@ export const userUpdateSchema = z.object({
   avatarUrl: z.string().url().max(1000).nullable().optional()
 });
 
+export const authRegisterSchema = userCreateSchema;
+
+export const authLoginSchema = z.object({
+  email: z.string().email().max(255),
+  password: z.string().min(1).max(128)
+});
+
 export const coupleCreateSchema = z.object({
-  ownerId: idSchema,
+  ownerId: idSchema.optional(),
   title: z.string().min(1).max(80).default("我们的空间"),
   startedAt: optionalDateSchema
 });
 
 export const coupleJoinSchema = z.object({
-  userId: idSchema,
+  userId: idSchema.optional(),
   inviteCode: z.string().min(4).max(24)
 });
 
@@ -63,7 +71,7 @@ export const deleteWithUserSchema = z.object({
 });
 
 export const diaryCreateSchema = z.object({
-  authorId: idSchema,
+  authorId: idSchema.optional(),
   title: z.string().min(1).max(120),
   content: z.string().min(1).max(20000),
   visibility: z.enum(["PRIVATE", "PARTNER", "SHARED"]).default("SHARED"),
@@ -79,7 +87,7 @@ export const diaryUpdateSchema = z.object({
 });
 
 export const moodCreateSchema = z.object({
-  userId: idSchema,
+  userId: idSchema.optional(),
   mood: z.string().min(1).max(80),
   energy: z.enum(["LOW", "MEDIUM", "HIGH"]).default("MEDIUM"),
   stressLevel: z.number().int().min(1).max(5).default(3),
@@ -99,7 +107,7 @@ export const moodUpdateSchema = z.object({
 });
 
 export const wishCreateSchema = z.object({
-  creatorId: idSchema,
+  creatorId: idSchema.optional(),
   title: z.string().min(1).max(120),
   category: z.string().min(1).max(40).default("共同愿望"),
   status: z.enum(["IDEA", "PLANNED", "DONE", "PAUSED"]).default("IDEA"),
@@ -119,7 +127,7 @@ export const wishUpdateSchema = z.object({
 });
 
 export const photoCreateSchema = z.object({
-  uploaderId: idSchema,
+  uploaderId: idSchema.optional(),
   url: z.string().url().max(1000),
   title: z.string().max(120).optional(),
   event: z.string().max(120).optional(),
@@ -135,7 +143,7 @@ export const photoUpdateSchema = z.object({
 });
 
 export const timeCapsuleCreateSchema = z.object({
-  userId: idSchema,
+  userId: idSchema.optional(),
   title: z.string().min(1).max(120),
   content: z.string().min(1).max(20000),
   unlockAt: dateSchema

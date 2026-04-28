@@ -12,7 +12,15 @@ const connectionString =
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
-    adapter: new PrismaPg({ connectionString })
+    adapter: new PrismaPg({ connectionString }),
+    omit: {
+      user: {
+        passwordHash: true
+      },
+      authSession: {
+        tokenHash: true
+      }
+    }
   });
 
 if (process.env.NODE_ENV !== "production") {

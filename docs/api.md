@@ -1,12 +1,17 @@
 # API 说明
 
-当前后端采用 Next.js Route Handlers，所有响应统一以 `{ "data": ... }` 包装成功结果。情侣空间内接口需要提供成员用户 ID，推荐放在请求头：
+当前后端采用 Next.js Route Handlers，所有响应统一以 `{ "data": ... }` 包装成功结果。正式认证使用邮箱密码和 HttpOnly Cookie 会话。
 
-```http
-x-user-id: <userId>
-```
+开发环境仍支持 `x-user-id` 或 `?userId=` 作为调试入口；生产环境会关闭这条旁路。
 
-也可以在查询参数中使用 `?userId=<userId>`；创建类接口通常在 JSON body 中传入 `ownerId`、`authorId`、`creatorId` 或 `uploaderId`。
+## 认证接口
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| POST | `/api/auth/register` | 邮箱密码注册，并设置登录 Cookie |
+| POST | `/api/auth/login` | 邮箱密码登录，并设置登录 Cookie |
+| POST | `/api/auth/logout` | 删除服务端会话并清除 Cookie |
+| GET | `/api/auth/me` | 获取当前登录用户 |
 
 ## 基础接口
 
@@ -46,9 +51,9 @@ x-user-id: <userId>
 ## 快速创建测试数据
 
 ```bash
-curl -X POST http://localhost:3000/api/users \
+curl -i -X POST http://localhost:3000/api/auth/register \
   -H 'Content-Type: application/json' \
-  -d '{"email":"a@example.com","name":"A"}'
+  -d '{"email":"a@example.com","name":"A","password":"StrongPass123!"}'
 ```
 
 创建情侣空间：
@@ -56,5 +61,16 @@ curl -X POST http://localhost:3000/api/users \
 ```bash
 curl -X POST http://localhost:3000/api/couples \
   -H 'Content-Type: application/json' \
-  -d '{"ownerId":"<userId>","title":"我们的空间","startedAt":"2024-08-03"}'
+  -b 'couple_session=<登录 Cookie>' \
+  -d '{"title":"我们的空间","startedAt":"2024-08-03"}'
 ```
+
+## 认证测试
+
+启动服务后执行：
+
+```bash
+npm run test:api
+```
+
+该脚本会自动完成注册、登录态读取、创建情侣空间、加入空间、写日记、越权拦截、退出登录、重新登录和数据清理。

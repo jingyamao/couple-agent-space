@@ -6,7 +6,11 @@ import {
   ok,
   parseOptionalJson
 } from "@/lib/api/http";
-import { getRequesterId, requireCoupleMember } from "@/lib/api/guards";
+import {
+  getRequesterId,
+  requireCoupleMember,
+  resolveActorId
+} from "@/lib/api/guards";
 import { deleteWithUserSchema, diaryUpdateSchema } from "@/lib/api/schemas";
 
 type RouteContext = {
@@ -44,7 +48,7 @@ function assertCanEditDiary(diary: { authorId: string }, userId?: string) {
 export async function GET(request: Request, context: RouteContext) {
   try {
     const { coupleId, diaryId } = await context.params;
-    const userId = getRequesterId(request);
+    const userId = await getRequesterId(request);
     await requireCoupleMember(coupleId, userId);
     const diary = await requireDiary(coupleId, diaryId);
     assertCanViewDiary(diary, userId);
@@ -59,7 +63,7 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const { coupleId, diaryId } = await context.params;
     const input = await parseOptionalJson(request, diaryUpdateSchema, {});
-    const userId = input.userId ?? getRequesterId(request);
+    const userId = await resolveActorId(request, input.userId);
     await requireCoupleMember(coupleId, userId);
     const existing = await requireDiary(coupleId, diaryId);
     assertCanEditDiary(existing, userId);
@@ -85,7 +89,7 @@ export async function DELETE(request: Request, context: RouteContext) {
   try {
     const { coupleId, diaryId } = await context.params;
     const input = await parseOptionalJson(request, deleteWithUserSchema, {});
-    const userId = input.userId ?? getRequesterId(request);
+    const userId = await resolveActorId(request, input.userId);
     await requireCoupleMember(coupleId, userId);
     const existing = await requireDiary(coupleId, diaryId);
     assertCanEditDiary(existing, userId);

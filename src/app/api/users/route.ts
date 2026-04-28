@@ -1,9 +1,13 @@
 import { prisma } from "@/lib/prisma";
-import { created, getSearchParam, handleApiError, ok, parseJson } from "@/lib/api/http";
+import { ApiError, getSearchParam, handleApiError, ok, parseJson } from "@/lib/api/http";
+import { getAuthenticatedUser } from "@/lib/api/guards";
 import { userCreateSchema } from "@/lib/api/schemas";
+import { registerUser } from "@/lib/auth/user";
+import { buildSessionCookie, createSession } from "@/lib/auth/session";
 
 export async function GET(request: Request) {
   try {
+    const requester = await getAuthenticatedUser(request);
     const id = getSearchParam(request, "id");
     const email = getSearchParam(request, "email");
 
@@ -19,15 +23,25 @@ export async function GET(request: Request) {
         }
       });
 
+      if (user?.id !== requester.id) {
+        throw new ApiError(403, "SELF_REQUIRED", "只能查询自己的用户资料");
+      }
+
       return ok(user);
     }
 
-    const users = await prisma.user.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 50
+    const user = await prisma.user.findUnique({
+      where: { id: requester.id },
+      include: {
+        memberships: {
+          include: {
+            couple: true
+          }
+        }
+      }
     });
 
-    return ok(users);
+    return ok(user);
   } catch (error) {
     return handleApiError(error);
   }
@@ -36,16 +50,25 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const input = await parseJson(request, userCreateSchema);
-    const user = await prisma.user.upsert({
-      where: { email: input.email },
-      update: {
-        name: input.name,
-        avatarUrl: input.avatarUrl
-      },
-      create: input
-    });
+    const user = await registerUser(input);
+    const { token, session } = await createSession(user.id);
 
-    return created(user);
+    return Response.json(
+      {
+        data: {
+          user,
+          session: {
+            expiresAt: session.expiresAt
+          }
+        }
+      },
+      {
+        status: 201,
+        headers: {
+          "Set-Cookie": buildSessionCookie(token, session.expiresAt)
+        }
+      }
+    );
   } catch (error) {
     return handleApiError(error);
   }

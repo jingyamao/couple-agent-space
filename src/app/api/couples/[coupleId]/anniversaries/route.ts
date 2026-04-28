@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { created, handleApiError, ok, parseJson } from "@/lib/api/http";
-import { getRequesterId, requireCoupleMember } from "@/lib/api/guards";
+import { getRequesterId, requireCoupleMember, resolveActorId } from "@/lib/api/guards";
 import { anniversaryCreateSchema } from "@/lib/api/schemas";
 
 type RouteContext = {
@@ -12,7 +12,7 @@ type RouteContext = {
 export async function GET(request: Request, context: RouteContext) {
   try {
     const { coupleId } = await context.params;
-    await requireCoupleMember(coupleId, getRequesterId(request));
+    await requireCoupleMember(coupleId, await getRequesterId(request));
 
     const anniversaries = await prisma.anniversary.findMany({
       where: { coupleId },
@@ -29,7 +29,7 @@ export async function POST(request: Request, context: RouteContext) {
   try {
     const { coupleId } = await context.params;
     const input = await parseJson(request, anniversaryCreateSchema);
-    await requireCoupleMember(coupleId, input.userId ?? getRequesterId(request));
+    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
 
     const anniversary = await prisma.anniversary.create({
       data: {

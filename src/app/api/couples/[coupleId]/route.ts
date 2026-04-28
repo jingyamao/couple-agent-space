@@ -3,7 +3,8 @@ import { handleApiError, noContent, ok, parseJson } from "@/lib/api/http";
 import {
   getRequesterId,
   requireCoupleMember,
-  requireCoupleOwner
+  requireCoupleOwner,
+  resolveActorId
 } from "@/lib/api/guards";
 import { coupleUpdateSchema } from "@/lib/api/schemas";
 
@@ -16,7 +17,7 @@ type RouteContext = {
 export async function GET(request: Request, context: RouteContext) {
   try {
     const { coupleId } = await context.params;
-    await requireCoupleMember(coupleId, getRequesterId(request));
+    await requireCoupleMember(coupleId, await getRequesterId(request));
 
     const couple = await prisma.couple.findUnique({
       where: { id: coupleId },
@@ -39,7 +40,7 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const { coupleId } = await context.params;
     const input = await parseJson(request, coupleUpdateSchema);
-    await requireCoupleMember(coupleId, input.userId ?? getRequesterId(request));
+    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
 
     const couple = await prisma.couple.update({
       where: { id: coupleId },
@@ -58,7 +59,7 @@ export async function PATCH(request: Request, context: RouteContext) {
 export async function DELETE(request: Request, context: RouteContext) {
   try {
     const { coupleId } = await context.params;
-    await requireCoupleOwner(coupleId, getRequesterId(request));
+    await requireCoupleOwner(coupleId, await getRequesterId(request));
     await prisma.couple.delete({
       where: { id: coupleId }
     });

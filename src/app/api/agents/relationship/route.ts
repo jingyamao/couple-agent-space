@@ -2,7 +2,7 @@ import {
   relationshipAgentRequestSchema,
   runRelationshipAgent
 } from "@/lib/ai/relationship-agent";
-import { requireCoupleMember } from "@/lib/api/guards";
+import { resolveActorId, requireCoupleMember } from "@/lib/api/guards";
 import { handleApiError } from "@/lib/api/http";
 import { prisma } from "@/lib/prisma";
 
@@ -21,17 +21,22 @@ export async function POST(request: Request) {
       );
     }
 
-    if (parsed.data.coupleId && parsed.data.userId) {
-      await requireCoupleMember(parsed.data.coupleId, parsed.data.userId);
+    const userId =
+      parsed.data.coupleId || parsed.data.userId
+        ? await resolveActorId(request, parsed.data.userId)
+        : undefined;
+
+    if (parsed.data.coupleId) {
+      await requireCoupleMember(parsed.data.coupleId, userId);
     }
 
     const result = await runRelationshipAgent(parsed.data);
 
-    if (parsed.data.coupleId || parsed.data.userId) {
+    if (parsed.data.coupleId || userId) {
       await prisma.agentRun.create({
         data: {
           coupleId: parsed.data.coupleId,
-          userId: parsed.data.userId,
+          userId,
           intent: parsed.data.intent,
           input: parsed.data,
           output: result,

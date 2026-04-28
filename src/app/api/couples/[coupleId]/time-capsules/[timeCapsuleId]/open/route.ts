@@ -12,7 +12,7 @@ type RouteContext = {
 export async function POST(request: Request, context: RouteContext) {
   try {
     const { coupleId, timeCapsuleId } = await context.params;
-    await requireCoupleMember(coupleId, getRequesterId(request));
+    await requireCoupleMember(coupleId, await getRequesterId(request));
 
     const capsule = await prisma.timeCapsule.findFirst({
       where: { id: timeCapsuleId, coupleId }

@@ -6,7 +6,10 @@ import {
   ok,
   parseOptionalJson
 } from "@/lib/api/http";
-import { getRequesterId, requireCoupleMember } from "@/lib/api/guards";
+import {
+  requireCoupleMember,
+  resolveActorId
+} from "@/lib/api/guards";
 import { deleteWithUserSchema, moodUpdateSchema } from "@/lib/api/schemas";
 
 type RouteContext = {
@@ -38,7 +41,7 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const { coupleId, moodId } = await context.params;
     const input = await parseOptionalJson(request, moodUpdateSchema, {});
-    const userId = input.userId ?? getRequesterId(request);
+    const userId = await resolveActorId(request, input.userId);
     await requireCoupleMember(coupleId, userId);
     const existing = await requireMood(coupleId, moodId);
     assertCanEditMood(existing, userId);
@@ -66,7 +69,7 @@ export async function DELETE(request: Request, context: RouteContext) {
   try {
     const { coupleId, moodId } = await context.params;
     const input = await parseOptionalJson(request, deleteWithUserSchema, {});
-    const userId = input.userId ?? getRequesterId(request);
+    const userId = await resolveActorId(request, input.userId);
     await requireCoupleMember(coupleId, userId);
     const existing = await requireMood(coupleId, moodId);
     assertCanEditMood(existing, userId);

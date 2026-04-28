@@ -13,6 +13,7 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:studio": "prisma studio",
+    "test:api": "node scripts/e2e-auth-api.mjs",
     "check": "npm run lint && npm run typecheck"
   },
   "dependencies": {

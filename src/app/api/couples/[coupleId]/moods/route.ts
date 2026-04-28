@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { created, handleApiError, ok, parseJson } from "@/lib/api/http";
-import { getRequesterId, requireCoupleMember } from "@/lib/api/guards";
+import { getRequesterId, requireCoupleMember, resolveActorId } from "@/lib/api/guards";
 import { moodCreateSchema } from "@/lib/api/schemas";
 
 type RouteContext = {
@@ -12,7 +12,7 @@ type RouteContext = {
 export async function GET(request: Request, context: RouteContext) {
   try {
     const { coupleId } = await context.params;
-    await requireCoupleMember(coupleId, getRequesterId(request));
+    await requireCoupleMember(coupleId, await getRequesterId(request));
 
     const moods = await prisma.moodCheckIn.findMany({
       where: { coupleId },
@@ -31,12 +31,13 @@ export async function POST(request: Request, context: RouteContext) {
   try {
     const { coupleId } = await context.params;
     const input = await parseJson(request, moodCreateSchema);
-    await requireCoupleMember(coupleId, input.userId);
+    const userId = await resolveActorId(request, input.userId);
+    await requireCoupleMember(coupleId, userId);
 
     const mood = await prisma.moodCheckIn.create({
       data: {
         coupleId,
-        userId: input.userId,
+        userId,
         mood: input.mood,
         energy: input.energy,
         stressLevel: input.stressLevel,

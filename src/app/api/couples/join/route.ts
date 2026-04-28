@@ -1,12 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { ApiError, created, handleApiError, ok, parseJson } from "@/lib/api/http";
-import { requireUser } from "@/lib/api/guards";
+import { resolveActorId } from "@/lib/api/guards";
 import { coupleJoinSchema } from "@/lib/api/schemas";
 
 export async function POST(request: Request) {
   try {
     const input = await parseJson(request, coupleJoinSchema);
-    await requireUser(input.userId);
+    const userId = await resolveActorId(request, input.userId);
 
     const couple = await prisma.couple.findUnique({
       where: { inviteCode: input.inviteCode },
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     }
 
     const existing = couple.members.find(
-      (member) => member.userId === input.userId
+      (member) => member.userId === userId
     );
 
     if (existing) {
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     const membership = await prisma.coupleMember.create({
       data: {
         coupleId: couple.id,
-        userId: input.userId,
+        userId,
         role: "PARTNER"
       },
       include: {
