@@ -19,7 +19,11 @@ const intentOptions = [
   { label: "冷静沟通", value: "conflict_repair" }
 ];
 
-export function AgentPanel() {
+type AgentPanelProps = {
+  coupleId?: string;
+};
+
+export function AgentPanel({ coupleId }: AgentPanelProps) {
   const [intent, setIntent] = useState(intentOptions[0].value);
   const [message, setMessage] = useState("她今天工作很累，我想让她轻松一点");
   const [result, setResult] = useState<AgentResult | null>(null);
@@ -38,9 +42,8 @@ export function AgentPanel() {
       body: JSON.stringify({
         intent,
         message,
+        coupleId,
         context: {
-          relationshipDays: 642,
-          city: "上海",
           currentMood: "需要一点鼓励",
           partnerMood: "工作有点满"
         }
