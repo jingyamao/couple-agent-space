@@ -40,7 +40,13 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const { coupleId } = await context.params;
     const input = await parseJson(request, coupleUpdateSchema);
-    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
+    const userId = await resolveActorId(request, input.userId);
+
+    if (input.title !== undefined) {
+      await requireCoupleOwner(coupleId, userId);
+    } else {
+      await requireCoupleMember(coupleId, userId);
+    }
 
     const couple = await prisma.couple.update({
       where: { id: coupleId },

@@ -46,7 +46,10 @@ export function getDevUserId(request: Request) {
   );
 }
 
-export async function createSession(userId: string) {
+export async function createSession(
+  userId: string,
+  meta?: { ipAddress?: string; userAgent?: string }
+) {
   const token = randomBytes(32).toString("base64url");
   const expiresAt = new Date(Date.now() + SESSION_TTL_DAYS * 86_400_000);
 
@@ -54,7 +57,9 @@ export async function createSession(userId: string) {
     data: {
       userId,
       tokenHash: hashToken(token),
-      expiresAt
+      expiresAt,
+      ipAddress: meta?.ipAddress,
+      userAgent: meta?.userAgent
     },
     include: {
       user: true

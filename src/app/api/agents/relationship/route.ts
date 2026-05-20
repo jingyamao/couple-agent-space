@@ -3,7 +3,7 @@ import {
   runRelationshipAgent
 } from "@/lib/ai/relationship-agent";
 import { resolveActorId, requireCoupleMember } from "@/lib/api/guards";
-import { handleApiError } from "@/lib/api/http";
+import { ApiError, handleApiError } from "@/lib/api/http";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
@@ -12,13 +12,7 @@ export async function POST(request: Request) {
     const parsed = relationshipAgentRequestSchema.safeParse(body);
 
     if (!parsed.success) {
-      return Response.json(
-        {
-          error: "INVALID_AGENT_REQUEST",
-          detail: parsed.error.flatten()
-        },
-        { status: 400 }
-      );
+      throw new ApiError(400, "INVALID_AGENT_REQUEST", "请求参数不符合要求", parsed.error.flatten());
     }
 
     const userId =

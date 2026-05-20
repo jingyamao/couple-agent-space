@@ -32,8 +32,13 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const { coupleId, photoId } = await context.params;
     const input = await parseOptionalJson(request, photoUpdateSchema, {});
-    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
-    await requirePhoto(coupleId, photoId);
+    const userId = await resolveActorId(request, input.userId);
+    await requireCoupleMember(coupleId, userId);
+    const existing = await requirePhoto(coupleId, photoId);
+
+    if (existing.uploaderId !== userId) {
+      throw new ApiError(403, "PHOTO_OWNER_REQUIRED", "只能修改自己上传的照片");
+    }
 
     const photo = await prisma.photo.update({
       where: { id: photoId },
@@ -56,8 +61,13 @@ export async function DELETE(request: Request, context: RouteContext) {
   try {
     const { coupleId, photoId } = await context.params;
     const input = await parseOptionalJson(request, deleteWithUserSchema, {});
-    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
-    await requirePhoto(coupleId, photoId);
+    const userId = await resolveActorId(request, input.userId);
+    await requireCoupleMember(coupleId, userId);
+    const photo = await requirePhoto(coupleId, photoId);
+
+    if (photo.uploaderId !== userId) {
+      throw new ApiError(403, "PHOTO_OWNER_REQUIRED", "只能删除自己上传的照片");
+    }
     await prisma.photo.delete({
       where: { id: photoId }
     });

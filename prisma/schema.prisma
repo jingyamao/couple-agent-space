@@ -66,6 +66,9 @@ model AuthSession {
   expiresAt  DateTime
   createdAt  DateTime @default(now())
   lastUsedAt DateTime @default(now())
+  ipAddress  String?  @map("ip_address")
+  userAgent  String?  @map("user_agent")
+  deviceName String?  @map("device_name")
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])

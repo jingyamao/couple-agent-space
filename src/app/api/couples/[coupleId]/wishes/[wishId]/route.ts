@@ -79,8 +79,13 @@ export async function DELETE(request: Request, context: RouteContext) {
   try {
     const { coupleId, wishId } = await context.params;
     const input = await parseOptionalJson(request, deleteWithUserSchema, {});
-    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
-    await requireWish(coupleId, wishId);
+    const userId = await resolveActorId(request, input.userId);
+    await requireCoupleMember(coupleId, userId);
+    const wish = await requireWish(coupleId, wishId);
+
+    if (wish.creatorId !== userId) {
+      throw new ApiError(403, "WISH_CREATOR_REQUIRED", "只有创建者可以删除愿望");
+    }
     await prisma.wish.delete({
       where: { id: wishId }
     });

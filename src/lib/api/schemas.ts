@@ -17,7 +17,13 @@ export const paginationSchema = z.object({
 export const userCreateSchema = z.object({
   email: z.string().email().max(255),
   name: z.string().min(1).max(80),
-  password: z.string().min(8).max(128),
+  password: z
+    .string()
+    .min(8, "密码至少 8 个字符")
+    .max(128)
+    .regex(/[a-z]/, "密码需包含小写字母")
+    .regex(/[A-Z]/, "密码需包含大写字母")
+    .regex(/[0-9]/, "密码需包含数字"),
   avatarUrl: z.string().url().max(1000).optional()
 });
 

@@ -149,6 +149,130 @@ try {
   cookieB = loggedInB.cookie;
   assert(cookieB, "login should set auth cookie");
 
+  // --- Anniversary CRUD ---
+  const anniversary = await request(`/api/couples/${couple.id}/anniversaries`, {
+    method: "POST",
+    cookie: cookieA,
+    status: 201,
+    body: { title: "在一起纪念日", happenedAt: "2024-08-03", remindDays: [30, 7, 1] }
+  });
+  assert(anniversary.payload.data.title === "在一起纪念日", "anniversary should be created");
+
+  const anniversaries = await request(`/api/couples/${couple.id}/anniversaries`, { cookie: cookieA });
+  assert(anniversaries.payload.data.length >= 1, "should list anniversaries");
+
+  await request(`/api/couples/${couple.id}/anniversaries/${anniversary.payload.data.id}`, {
+    method: "PATCH",
+    cookie: cookieA,
+    body: { title: "更新的纪念日" }
+  });
+
+  // --- Mood CRUD ---
+  const mood = await request(`/api/couples/${couple.id}/moods`, {
+    method: "POST",
+    cookie: cookieA,
+    status: 201,
+    body: { mood: "开心", energy: "HIGH", stressLevel: 2, carePreference: "一起散步" }
+  });
+  assert(mood.payload.data.mood === "开心", "mood should be created");
+
+  const moods = await request(`/api/couples/${couple.id}/moods`, { cookie: cookieA });
+  assert(moods.payload.data.length >= 1, "should list moods");
+
+  await request(`/api/couples/${couple.id}/moods/${mood.payload.data.id}`, {
+    method: "PATCH",
+    cookie: cookieA,
+    body: { mood: "平静" }
+  });
+
+  // --- Wish CRUD ---
+  const wish = await request(`/api/couples/${couple.id}/wishes`, {
+    method: "POST",
+    cookie: cookieA,
+    status: 201,
+    body: { title: "一起看海", category: "旅行", status: "IDEA" }
+  });
+  assert(wish.payload.data.title === "一起看海", "wish should be created");
+
+  await request(`/api/couples/${couple.id}/wishes/${wish.payload.data.id}`, {
+    method: "PATCH",
+    cookie: cookieA,
+    body: { status: "PLANNED" }
+  });
+
+  const filteredWishes = await request(`/api/couples/${couple.id}/wishes?status=PLANNED`, { cookie: cookieA });
+  assert(filteredWishes.payload.data.length >= 1, "filtered wishes should return results");
+
+  const invalidFilter = await request(`/api/couples/${couple.id}/wishes?status=INVALID`, { cookie: cookieA });
+  assert(invalidFilter.payload.data.length === 0, "invalid status filter should return empty");
+
+  // --- Photo CRUD ---
+  const photo = await request(`/api/couples/${couple.id}/photos`, {
+    method: "POST",
+    cookie: cookieA,
+    status: 201,
+    body: { url: "https://example.com/photo.jpg", title: "测试照片" }
+  });
+  assert(photo.payload.data.title === "测试照片", "photo should be created");
+
+  // Photo ownership: user B cannot delete user A's photo
+  await request(`/api/couples/${couple.id}/photos/${photo.payload.data.id}`, {
+    method: "DELETE",
+    cookie: cookieB,
+    status: 403
+  });
+
+  // Wish delete ownership: user B cannot delete user A's wish
+  await request(`/api/couples/${couple.id}/wishes/${wish.payload.data.id}`, {
+    method: "DELETE",
+    cookie: cookieB,
+    status: 403
+  });
+
+  // Diary edit authorization: user B cannot edit user A's diary
+  const diaryId = dashboard.payload.data.diaryEntries[0]?.id;
+  if (diaryId) {
+    await request(`/api/couples/${couple.id}/diaries/${diaryId}`, {
+      method: "PATCH",
+      cookie: cookieB,
+      status: 403,
+      body: { title: "Hacked" }
+    });
+  }
+
+  // --- Input validation ---
+  await request("/api/auth/register", {
+    method: "POST",
+    status: 400,
+    body: { email: "weak@test.com", name: "Weak", password: "short" }
+  });
+
+  // --- Couple title requires owner ---
+  await request(`/api/couples/${couple.id}`, {
+    method: "PATCH",
+    cookie: cookieB,
+    status: 403,
+    body: { title: "Hacked Title" }
+  });
+
+  // --- Cleanup ---
+  await request(`/api/couples/${couple.id}/anniversaries/${anniversary.payload.data.id}`, {
+    method: "DELETE",
+    cookie: cookieA
+  });
+  await request(`/api/couples/${couple.id}/moods/${mood.payload.data.id}`, {
+    method: "DELETE",
+    cookie: cookieA
+  });
+  await request(`/api/couples/${couple.id}/wishes/${wish.payload.data.id}`, {
+    method: "DELETE",
+    cookie: cookieA
+  });
+  await request(`/api/couples/${couple.id}/photos/${photo.payload.data.id}`, {
+    method: "DELETE",
+    cookie: cookieA
+  });
+
   await request(`/api/couples/${couple.id}`, {
     method: "DELETE",
     cookie: cookieA,

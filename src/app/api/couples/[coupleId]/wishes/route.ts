@@ -14,11 +14,16 @@ export async function GET(request: Request, context: RouteContext) {
     const { coupleId } = await context.params;
     await requireCoupleMember(coupleId, await getRequesterId(request));
 
-    const status = new URL(request.url).searchParams.get("status") ?? undefined;
+    const statusParam = new URL(request.url).searchParams.get("status");
+    const validStatuses = ["IDEA", "PLANNED", "DONE", "PAUSED"] as const;
+    const statusFilter = validStatuses.includes(statusParam as (typeof validStatuses[number]))
+      ? (statusParam as (typeof validStatuses[number]))
+      : undefined;
+
     const wishes = await prisma.wish.findMany({
       where: {
         coupleId,
-        status: status as never
+        ...(statusFilter ? { status: statusFilter } : {})
       },
       include: { creator: true },
       orderBy: { updatedAt: "desc" },
