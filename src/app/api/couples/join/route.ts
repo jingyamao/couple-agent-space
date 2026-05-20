@@ -17,6 +17,10 @@ export async function POST(request: Request) {
       throw new ApiError(404, "INVITE_NOT_FOUND", "邀请码不存在");
     }
 
+    if (couple.inviteCodeExpiresAt && couple.inviteCodeExpiresAt.getTime() < Date.now()) {
+      throw new ApiError(410, "INVITE_CODE_EXPIRED", "邀请码已过期，请向对方索取新的邀请码");
+    }
+
     const existing = couple.members.find(
       (member) => member.userId === userId
     );

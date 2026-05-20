@@ -2,25 +2,13 @@ import { prisma } from "@/lib/prisma";
 import { created, handleApiError, ok, parseJson } from "@/lib/api/http";
 import { getRequesterId, requireCoupleMember, resolveActorId } from "@/lib/api/guards";
 import { timeCapsuleCreateSchema } from "@/lib/api/schemas";
+import { hideLockedContent } from "@/lib/services/time-capsule";
 
 type RouteContext = {
   params: Promise<{
     coupleId: string;
   }>;
 };
-
-function hideLockedContent<T extends { unlockAt: Date; status: string; content: string }>(
-  item: T
-) {
-  if (item.status === "LOCKED" && item.unlockAt.getTime() > Date.now()) {
-    return {
-      ...item,
-      content: null
-    };
-  }
-
-  return item;
-}
 
 export async function GET(request: Request, context: RouteContext) {
   try {

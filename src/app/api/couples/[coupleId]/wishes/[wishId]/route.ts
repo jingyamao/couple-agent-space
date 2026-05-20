@@ -53,8 +53,20 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const { coupleId, wishId } = await context.params;
     const input = await parseOptionalJson(request, wishUpdateSchema, {});
-    await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
-    await requireWish(coupleId, wishId);
+    const userId = await resolveActorId(request, input.userId);
+    await requireCoupleMember(coupleId, userId);
+    const existing = await requireWish(coupleId, wishId);
+
+    if (input.status && input.status !== existing.status) {
+      await prisma.wishStatusHistory.create({
+        data: {
+          wishId,
+          fromStatus: existing.status,
+          toStatus: input.status,
+          changedBy: userId
+        }
+      });
+    }
 
     const wish = await prisma.wish.update({
       where: { id: wishId },

@@ -43,20 +43,21 @@ enum AgentRunStatus {
 }
 
 model User {
-  id           String         @id @default(cuid())
-  email        String         @unique
-  name         String
-  passwordHash String
-  avatarUrl    String?
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  sessions     AuthSession[]
-  memberships  CoupleMember[]
-  diaryEntries DiaryEntry[]
-  moodCheckIns MoodCheckIn[]
-  wishes       Wish[]         @relation("WishCreator")
-  photos       Photo[]
-  agentRuns    AgentRun[]
+  id               String              @id @default(cuid())
+  email            String              @unique
+  name             String
+  passwordHash     String
+  avatarUrl        String?
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  sessions         AuthSession[]
+  memberships      CoupleMember[]
+  diaryEntries     DiaryEntry[]
+  moodCheckIns     MoodCheckIn[]
+  wishes           Wish[]              @relation("WishCreator")
+  photos           Photo[]
+  agentRuns        AgentRun[]
+  wishStatusHistory WishStatusHistory[]
 }
 
 model AuthSession {
@@ -76,21 +77,23 @@ model AuthSession {
 }
 
 model Couple {
-  id            String          @id @default(cuid())
-  inviteCode    String          @unique
-  title         String          @default("我们的空间")
-  startedAt     DateTime?
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  members       CoupleMember[]
-  anniversaries Anniversary[]
-  diaryEntries  DiaryEntry[]
-  moodCheckIns  MoodCheckIn[]
-  wishes        Wish[]
-  photos        Photo[]
-  timeCapsules  TimeCapsule[]
-  agentMemories AgentMemory[]
-  agentRuns     AgentRun[]
+  id                   String          @id @default(cuid())
+  inviteCode           String          @unique
+  title                String          @default("我们的空间")
+  startedAt            DateTime?
+  inviteCodeExpiresAt  DateTime?       @map("invite_code_expires_at")
+  inviteCodeCreatedAt  DateTime?       @map("invite_code_created_at")
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  members              CoupleMember[]
+  anniversaries        Anniversary[]
+  diaryEntries         DiaryEntry[]
+  moodCheckIns         MoodCheckIn[]
+  wishes               Wish[]
+  photos               Photo[]
+  timeCapsules         TimeCapsule[]
+  agentMemories        AgentMemory[]
+  agentRuns            AgentRun[]
 }
 
 model CoupleMember {
@@ -155,19 +158,20 @@ model MoodCheckIn {
 }
 
 model Wish {
-  id          String     @id @default(cuid())
-  coupleId    String
-  creatorId   String
-  title       String
-  category    String
-  status      WishStatus @default(IDEA)
-  targetAt    DateTime?
-  budgetCents Int?
-  note        String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  couple      Couple     @relation(fields: [coupleId], references: [id], onDelete: Cascade)
-  creator     User       @relation("WishCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  id            String              @id @default(cuid())
+  coupleId      String
+  creatorId     String
+  title         String
+  category      String
+  status        WishStatus          @default(IDEA)
+  targetAt      DateTime?
+  budgetCents   Int?
+  note          String?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  couple        Couple              @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  creator       User                @relation("WishCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  statusHistory WishStatusHistory[]
 
   @@index([coupleId, status])
   @@index([creatorId])
@@ -228,4 +232,17 @@ model AgentRun {
 
   @@index([coupleId, createdAt])
   @@index([userId, createdAt])
+}
+
+model WishStatusHistory {
+  id         String     @id @default(cuid())
+  wishId     String
+  fromStatus WishStatus?
+  toStatus   WishStatus
+  changedBy  String
+  changedAt  DateTime   @default(now())
+  wish       Wish       @relation(fields: [wishId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [changedBy], references: [id], onDelete: Cascade)
+
+  @@index([wishId, changedAt])
 }

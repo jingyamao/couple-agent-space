@@ -37,11 +37,14 @@ export async function POST(request: Request) {
     const ownerId = await resolveActorId(request, input.ownerId);
 
     const couple = await prisma.$transaction(async (tx) => {
+      const { code, expiresAt } = await createUniqueInviteCode();
       const createdCouple = await tx.couple.create({
         data: {
-          inviteCode: await createUniqueInviteCode(),
+          inviteCode: code,
           title: input.title,
-          startedAt: input.startedAt
+          startedAt: input.startedAt,
+          inviteCodeExpiresAt: expiresAt,
+          inviteCodeCreatedAt: new Date()
         }
       });
 

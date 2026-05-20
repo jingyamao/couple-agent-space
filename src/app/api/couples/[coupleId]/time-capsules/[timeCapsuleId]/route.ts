@@ -15,6 +15,7 @@ import {
   deleteWithUserSchema,
   timeCapsuleUpdateSchema
 } from "@/lib/api/schemas";
+import { hideLockedContent, canEditCapsule } from "@/lib/services/time-capsule";
 
 type RouteContext = {
   params: Promise<{
@@ -22,19 +23,6 @@ type RouteContext = {
     timeCapsuleId: string;
   }>;
 };
-
-function hideLockedContent<T extends { unlockAt: Date; status: string; content: string }>(
-  item: T
-) {
-  if (item.status === "LOCKED" && item.unlockAt.getTime() > Date.now()) {
-    return {
-      ...item,
-      content: null
-    };
-  }
-
-  return item;
-}
 
 async function requireTimeCapsule(coupleId: string, timeCapsuleId: string) {
   const capsule = await prisma.timeCapsule.findFirst({
@@ -65,7 +53,11 @@ export async function PATCH(request: Request, context: RouteContext) {
     const { coupleId, timeCapsuleId } = await context.params;
     const input = await parseOptionalJson(request, timeCapsuleUpdateSchema, {});
     await requireCoupleMember(coupleId, await resolveActorId(request, input.userId));
-    await requireTimeCapsule(coupleId, timeCapsuleId);
+    const existing = await requireTimeCapsule(coupleId, timeCapsuleId);
+
+    if (!canEditCapsule(existing)) {
+      throw new ApiError(409, "TIME_CAPSULE_ALREADY_OPENED", "已开启的时间胶囊不能修改");
+    }
 
     const capsule = await prisma.timeCapsule.update({
       where: { id: timeCapsuleId },
