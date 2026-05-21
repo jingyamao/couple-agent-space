@@ -17,16 +17,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 
 type Wish = { id: string; title: string; category: string; status: "IDEA" | "PLANNED" | "DONE" | "PAUSED"; targetAt: string | null; budgetCents: number | null; note: string | null; creator: { id: string; name: string } };
-
 const statusOpts = [{ label: "灵感", value: "IDEA" }, { label: "进行中", value: "PLANNED" }, { label: "已完成", value: "DONE" }, { label: "暂停", value: "PAUSED" }];
 const statusTones: Record<string, "rose" | "teal" | "gold" | "neutral"> = { IDEA: "rose", PLANNED: "gold", DONE: "teal", PAUSED: "neutral" };
 const statusLabels: Record<string, string> = { IDEA: "灵感", PLANNED: "进行中", DONE: "已完成", PAUSED: "暂停" };
 const filterOpts = [{ label: "全部", value: "" }, ...statusOpts];
 
 export default function WishesPage() {
-  const { couple } = useCouple();
-  const { user } = useAuth();
-  const { toast } = useToast();
+  const { couple } = useCouple(); const { user } = useAuth(); const { toast } = useToast();
   const [wishes, setWishes] = useState<Wish[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState("");
@@ -34,12 +31,9 @@ export default function WishesPage() {
   const [editing, setEditing] = useState<Wish | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<Wish | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("共同愿望");
-  const [status, setStatus] = useState("IDEA");
-  const [targetAt, setTargetAt] = useState("");
-  const [budgetYuan, setBudgetYuan] = useState("");
-  const [note, setNote] = useState("");
+  const [title, setTitle] = useState(""); const [category, setCategory] = useState("共同愿望");
+  const [status, setStatus] = useState("IDEA"); const [targetAt, setTargetAt] = useState("");
+  const [budgetYuan, setBudgetYuan] = useState(""); const [note, setNote] = useState("");
 
   const fetchData = useCallback(async () => {
     if (!couple) return;
@@ -47,11 +41,7 @@ export default function WishesPage() {
     catch { toast("error", "加载失败"); return []; }
   }, [couple, filter, toast]);
 
-  useEffect(() => {
-    let c = false;
-    fetchData().then((r) => { if (!c && r) { setWishes(r); setIsLoading(false); } });
-    return () => { c = true; };
-  }, [fetchData]);
+  useEffect(() => { let c = false; fetchData().then((r) => { if (!c && r) { setWishes(r); setIsLoading(false); } }); return () => { c = true; }; }, [fetchData]);
 
   function openCreate() { setEditing(null); setTitle(""); setCategory("共同愿望"); setStatus("IDEA"); setTargetAt(""); setBudgetYuan(""); setNote(""); setDialogOpen(true); }
   function openEdit(w: Wish) { setEditing(w); setTitle(w.title); setCategory(w.category); setStatus(w.status); setTargetAt(w.targetAt ? new Date(w.targetAt).toISOString().split("T")[0] : ""); setBudgetYuan(w.budgetCents ? (w.budgetCents / 100).toString() : ""); setNote(w.note ?? ""); setDialogOpen(true); }
@@ -84,7 +74,7 @@ export default function WishesPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-bold">愿望清单</h1>
+        <h1 className="text-2xl font-bold" style={{ fontFamily: "var(--font-serif)" }}>愿望清单</h1>
         <div className="flex items-center gap-2">
           <Select name="filter" onChange={(e) => setFilter(e.target.value)} options={filterOpts} value={filter} />
           <Button onClick={openCreate}><Plus className="size-4" /> 添加愿望</Button>
@@ -100,10 +90,7 @@ export default function WishesPage() {
               <Card>
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-semibold">{w.title}</h3>
-                      <p className="text-xs text-[var(--muted-foreground)]">{w.category}</p>
-                    </div>
+                    <div><h3 className="font-semibold" style={{ fontFamily: "var(--font-serif)" }}>{w.title}</h3><p className="text-xs text-[var(--muted-foreground)]">{w.category}</p></div>
                     <Badge tone={statusTones[w.status]}>{statusLabels[w.status]}</Badge>
                   </div>
                   {w.budgetCents && <p className="mt-2 text-sm text-[var(--muted-foreground)]">预算: ¥{(w.budgetCents / 100).toFixed(0)}</p>}

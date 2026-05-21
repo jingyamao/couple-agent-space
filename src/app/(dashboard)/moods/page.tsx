@@ -17,25 +17,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 
 type Mood = { id: string; userId: string; mood: string; energy: "LOW" | "MEDIUM" | "HIGH"; stressLevel: number; carePreference: string | null; note: string | null; checkedAt: string; user: { id: string; name: string } };
-
 const energyOpts = [{ label: "需要休息", value: "LOW" }, { label: "状态平稳", value: "MEDIUM" }, { label: "精力充沛", value: "HIGH" }];
 const energyTones: Record<string, "rose" | "gold" | "teal"> = { LOW: "rose", MEDIUM: "gold", HIGH: "teal" };
 
 export default function MoodsPage() {
-  const { couple } = useCouple();
-  const { user } = useAuth();
-  const { toast } = useToast();
+  const { couple } = useCouple(); const { user } = useAuth(); const { toast } = useToast();
   const [moods, setMoods] = useState<Mood[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Mood | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<Mood | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [moodText, setMoodText] = useState("");
-  const [energy, setEnergy] = useState("MEDIUM");
-  const [stressLevel, setStressLevel] = useState(3);
-  const [carePreference, setCarePreference] = useState("");
-  const [note, setNote] = useState("");
+  const [moodText, setMoodText] = useState(""); const [energy, setEnergy] = useState("MEDIUM");
+  const [stressLevel, setStressLevel] = useState(3); const [carePreference, setCarePreference] = useState(""); const [note, setNote] = useState("");
 
   const fetchData = useCallback(async () => {
     if (!couple) return;
@@ -43,11 +37,7 @@ export default function MoodsPage() {
     catch { toast("error", "加载失败"); return []; }
   }, [couple, toast]);
 
-  useEffect(() => {
-    let c = false;
-    fetchData().then((r) => { if (!c && r) { setMoods(r); setIsLoading(false); } });
-    return () => { c = true; };
-  }, [fetchData]);
+  useEffect(() => { let c = false; fetchData().then((r) => { if (!c && r) { setMoods(r); setIsLoading(false); } }); return () => { c = true; }; }, [fetchData]);
 
   function openCreate() { setEditing(null); setMoodText(""); setEnergy("MEDIUM"); setStressLevel(3); setCarePreference(""); setNote(""); setDialogOpen(true); }
   function openEdit(m: Mood) { setEditing(m); setMoodText(m.mood); setEnergy(m.energy); setStressLevel(m.stressLevel); setCarePreference(m.carePreference ?? ""); setNote(m.note ?? ""); setDialogOpen(true); }
@@ -74,7 +64,7 @@ export default function MoodsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">心情打卡</h1>
+        <h1 className="text-2xl font-bold" style={{ fontFamily: "var(--font-serif)" }}>心情打卡</h1>
         <Button onClick={openCreate}><Plus className="size-4" /> 记录心情</Button>
       </div>
 
@@ -87,17 +77,14 @@ export default function MoodsPage() {
               <Card>
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between">
-                    <div>
-                      <p className="font-semibold">{m.user.name}</p>
-                      <p className="mt-1 text-lg">{m.mood}</p>
-                    </div>
+                    <div><p className="font-semibold">{m.user.name}</p><p className="mt-1 text-lg" style={{ fontFamily: "var(--font-serif)" }}>{m.mood}</p></div>
                     <Badge tone={energyTones[m.energy]}>{energyOpts.find((e) => e.value === m.energy)?.label}</Badge>
                   </div>
                   <div className="mt-3 flex items-center gap-2">
                     <span className="text-xs text-[var(--muted-foreground)]">压力:</span>
-                    <div className="flex gap-1">{[1,2,3,4,5].map((l) => <div className={`size-2.5 rounded-full ${l <= m.stressLevel ? "bg-[var(--primary)]" : "bg-[var(--border)]"}`} key={l} />)}</div>
+                    <div className="flex gap-1">{[1,2,3,4,5].map((l) => <div className={`size-2 rounded-full transition-colors ${l <= m.stressLevel ? "bg-[var(--primary)]" : "bg-[var(--border)]"}`} key={l} />)}</div>
                   </div>
-                  {m.carePreference && <p className="mt-3 rounded-xl bg-[var(--surface)] p-3 text-sm backdrop-blur-sm">{m.carePreference}</p>}
+                  {m.carePreference && <p className="mt-3 rounded-xl bg-[var(--surface)] p-3 text-sm">{m.carePreference}</p>}
                   <div className="mt-3 flex items-center justify-between">
                     <span className="text-xs text-[var(--muted-foreground)]">{format(new Date(m.checkedAt), "MM-dd HH:mm")}</span>
                     {m.userId === user?.id && (
@@ -123,7 +110,7 @@ export default function MoodsPage() {
             <input className="w-full accent-[var(--primary)]" max={5} min={1} onChange={(e) => setStressLevel(Number(e.target.value))} type="range" value={stressLevel} />
             <div className="flex justify-between text-xs text-[var(--muted-foreground)]"><span>轻松</span><span>很大</span></div>
           </div>
-          <Textarea label="希望对方怎样关心你" name="care" onChange={(e) => setCarePreference(e.target.value)} placeholder="陪我散散步、给我一个拥抱" value={carePreference} />
+          <Textarea label="希望对方怎样关心你" name="care" onChange={(e) => setCarePreference(e.target.value)} value={carePreference} />
           <div className="flex justify-end gap-2 pt-2">
             <Button onClick={() => setDialogOpen(false)} type="button" variant="outline">取消</Button>
             <Button disabled={isSaving} type="submit">{isSaving ? <Loader2 className="size-4 animate-spin" /> : "保存"}</Button>

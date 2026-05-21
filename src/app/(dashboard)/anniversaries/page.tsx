@@ -17,18 +17,15 @@ import { Textarea } from "@/components/ui/textarea";
 type Anniversary = { id: string; title: string; happenedAt: string; remindDays: number[]; note: string | null };
 
 export default function AnniversariesPage() {
-  const { couple } = useCouple();
-  const { toast } = useToast();
+  const { couple } = useCouple(); const { toast } = useToast();
   const [items, setItems] = useState<Anniversary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Anniversary | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<Anniversary | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [title, setTitle] = useState("");
-  const [happenedAt, setHappenedAt] = useState("");
-  const [remindDaysStr, setRemindDaysStr] = useState("30,7,1");
-  const [note, setNote] = useState("");
+  const [title, setTitle] = useState(""); const [happenedAt, setHappenedAt] = useState("");
+  const [remindDaysStr, setRemindDaysStr] = useState("30,7,1"); const [note, setNote] = useState("");
 
   const fetchData = useCallback(async () => {
     if (!couple) return;
@@ -36,11 +33,7 @@ export default function AnniversariesPage() {
     catch { toast("error", "加载失败"); return []; }
   }, [couple, toast]);
 
-  useEffect(() => {
-    let c = false;
-    fetchData().then((r) => { if (!c && r) { setItems(r); setIsLoading(false); } });
-    return () => { c = true; };
-  }, [fetchData]);
+  useEffect(() => { let c = false; fetchData().then((r) => { if (!c && r) { setItems(r); setIsLoading(false); } }); return () => { c = true; }; }, [fetchData]);
 
   function getDaysUntil(d: string) {
     const date = new Date(d); const now = new Date();
@@ -75,7 +68,7 @@ export default function AnniversariesPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">纪念日</h1>
+        <h1 className="text-2xl font-bold" style={{ fontFamily: "var(--font-serif)" }}>纪念日</h1>
         <Button onClick={openCreate}><Plus className="size-4" /> 添加纪念日</Button>
       </div>
 
@@ -90,7 +83,7 @@ export default function AnniversariesPage() {
                 <Card>
                   <CardContent className="p-5">
                     <div className="flex items-start justify-between">
-                      <h3 className="font-semibold">{a.title}</h3>
+                      <h3 className="font-semibold" style={{ fontFamily: "var(--font-serif)" }}>{a.title}</h3>
                       <Badge tone={days <= 7 ? "rose" : days <= 30 ? "gold" : "teal"}>{days === 0 ? "就是今天！" : `${days} 天后`}</Badge>
                     </div>
                     <p className="mt-2 text-sm text-[var(--muted-foreground)]">{format(new Date(a.happenedAt), "yyyy年MM月dd日")}</p>

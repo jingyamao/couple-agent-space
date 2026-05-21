@@ -1,19 +1,17 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import {
-  BookHeart, CalendarHeart, Heart, Home, LogOut, Palette, Settings, Sparkles, Star
+  BookHeart, CalendarHeart, Heart, Home, LogOut, Palette, Settings, Sparkles, Star, X
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/use-auth";
 import { useCouple, CoupleProvider } from "@/hooks/use-couple";
 import { useTheme } from "@/hooks/use-theme";
 import { CoupleSetup } from "@/components/couple/couple-setup";
 import { Button } from "@/components/ui/button";
-import { GoldenRetriever } from "@/components/dogs/golden-retriever";
-import { WhitePuppy } from "@/components/dogs/white-puppy";
-import { FloatingPaws } from "@/components/dogs/decorations";
 
 function DashboardShell({ children }: { children: React.ReactNode }) {
   const { user, isLoading: authLoading, logout } = useAuth();
@@ -21,6 +19,7 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
   const { toggleTheme } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) router.replace("/login");
@@ -29,12 +28,9 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
   if (authLoading || coupleLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div style={{ animation: "gentle-bounce 1.5s ease-in-out infinite" }}>
-            <GoldenRetriever size={100} />
-          </div>
-          <p className="mt-4 text-[var(--muted-foreground)]">加载中...</p>
-        </div>
+        <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 1.5, repeat: Infinity }}>
+          <Heart className="size-12 text-[var(--primary)]" />
+        </motion.div>
       </div>
     );
   }
@@ -47,84 +43,175 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
     { href: "/diaries", label: "日记", icon: BookHeart },
     { href: "/moods", label: "心情", icon: Sparkles },
     { href: "/anniversaries", label: "纪念日", icon: CalendarHeart },
-    { href: "/wishes", label: "愿望", icon: Star }
+    { href: "/wishes", label: "愿望", icon: Star },
+    { href: "/settings", label: "设置", icon: Settings }
   ];
 
-  async function handleLogout() {
-    await logout();
-    router.push("/login");
-  }
+  async function handleLogout() { await logout(); router.push("/login"); }
 
   return (
-    <div className="relative min-h-screen">
-      <FloatingPaws />
-
-      {/* 顶部导航 */}
-      <header className="sticky top-0 z-40 glass">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="flex size-10 items-center justify-center rounded-2xl bg-[var(--primary)] text-white shadow-md">
-                <Heart className="size-5" />
+    <div className="flex min-h-screen">
+      {/* Desktop Sidebar (>=1024px) */}
+      <aside className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:flex lg:w-64 lg:flex-col">
+        <div className="glass flex h-full flex-col rounded-r-3xl p-5">
+          {/* Couple Info */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary)] text-lg font-bold text-white">
+                  {couple.members[0]?.user.name.charAt(0) ?? "?"}
+                </div>
+                <motion.div
+                  animate={{ scale: [1, 1.15, 1] }}
+                  className="absolute -bottom-0.5 -right-0.5 flex size-5 items-center justify-center rounded-full bg-[var(--primary)]"
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <Heart className="size-2.5 text-white" />
+                </motion.div>
               </div>
-              <div className="absolute -bottom-0.5 -right-0.5" style={{ animation: "gentle-bounce 3s ease-in-out infinite" }}>
-                <svg height="12" viewBox="0 0 24 24" width="12" fill="var(--secondary)">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                </svg>
-              </div>
+              {couple.members[1] && (
+                <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-[var(--secondary-light)] to-[var(--secondary)] text-lg font-bold text-white">
+                  {couple.members[1].user.name.charAt(0)}
+                </div>
+              )}
             </div>
-            <div>
-              <p className="text-xs font-medium text-[var(--muted-foreground)]">Couple Agent Space</p>
-              <h1 className="text-sm font-bold">{couple.title}</h1>
-            </div>
+            <h2 className="mt-3 text-lg font-bold" style={{ fontFamily: "var(--font-serif)" }}>{couple.title}</h2>
+            <p className="text-xs text-[var(--muted-foreground)]">
+              {couple.members.map((m) => m.user.name).join(" & ")}
+            </p>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            {/* 小狗标识 */}
-            <div className="mr-1 hidden items-center gap-0.5 sm:flex">
-              <GoldenRetriever size={28} />
-              <WhitePuppy size={24} />
-            </div>
+          {/* Nav */}
+          <nav className="flex-1 space-y-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                    isActive
+                      ? "bg-[rgba(232,160,176,0.12)] text-[var(--primary-dark)]"
+                      : "text-[var(--muted-foreground)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
+                  }`}
+                  href={item.href}
+                  key={item.href}
+                >
+                  <Icon className="size-5" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-            {/* 主题切换 */}
-            <Button onClick={toggleTheme} size="icon" variant="ghost" title="切换主题">
-              <Palette className="size-4" />
+          {/* Bottom */}
+          <div className="space-y-2 border-t border-[var(--border)] pt-4">
+            <Button className="w-full justify-start gap-3" onClick={toggleTheme} variant="ghost">
+              <Palette className="size-5" /> 切换主题
             </Button>
-
-            <Link href="/settings">
-              <Button size="icon" variant="ghost"><Settings className="size-4" /></Button>
-            </Link>
-            <Button onClick={handleLogout} size="icon" variant="ghost"><LogOut className="size-4" /></Button>
+            <Button className="w-full justify-start gap-3" onClick={handleLogout} variant="ghost">
+              <LogOut className="size-5" /> 退出登录
+            </Button>
           </div>
         </div>
-      </header>
+      </aside>
 
-      {/* 导航标签 */}
-      <nav className="glass-strong sticky top-[57px] z-30 border-b border-[var(--border)]">
-        <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 sm:px-6">
-          {navItems.map((item) => {
+      {/* Mobile/Tablet Bottom Nav */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden">
+        <div className="glass mx-3 mb-3 flex items-center justify-around rounded-2xl px-2 py-2">
+          {navItems.slice(0, 5).map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
             return (
               <Link
-                className={`flex items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "border-[var(--primary)] text-[var(--primary)]"
-                    : "border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+                className={`flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-xs transition-all ${
+                  isActive ? "text-[var(--primary-dark)]" : "text-[var(--muted-foreground)]"
                 }`}
                 href={item.href}
                 key={item.href}
               >
-                <Icon className="size-4" />
-                {item.label}
+                <Icon className="size-5" />
+                <span>{item.label}</span>
+                {isActive && (
+                  <motion.div
+                    className="mt-0.5 h-0.5 w-4 rounded-full bg-[var(--primary)]"
+                    layoutId="bottomNav"
+                  />
+                )}
               </Link>
             );
           })}
+          <button
+            className="flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-xs text-[var(--muted-foreground)]"
+            onClick={() => setSidebarOpen(true)}
+            type="button"
+          >
+            <Settings className="size-5" />
+            <span>更多</span>
+          </button>
         </div>
-      </nav>
+      </div>
 
-      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
-        {children}
+      {/* Mobile Slide-out Menu */}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <>
+            <motion.div
+              animate={{ opacity: 1 }}
+              className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm lg:hidden"
+              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }}
+              onClick={() => setSidebarOpen(false)}
+            />
+            <motion.div
+              animate={{ x: 0 }}
+              className="fixed inset-y-0 right-0 z-50 w-72 lg:hidden"
+              exit={{ x: "100%" }}
+              initial={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            >
+              <div className="glass flex h-full flex-col p-5">
+                <div className="mb-6 flex items-center justify-between">
+                  <h2 className="text-lg font-bold" style={{ fontFamily: "var(--font-serif)" }}>菜单</h2>
+                  <Button onClick={() => setSidebarOpen(false)} size="icon" variant="ghost"><X className="size-5" /></Button>
+                </div>
+
+                <div className="mb-6 flex items-center gap-3">
+                  <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary)] text-lg font-bold text-white">
+                    {couple.members[0]?.user.name.charAt(0) ?? "?"}
+                  </div>
+                  {couple.members[1] && (
+                    <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-[var(--secondary-light)] to-[var(--secondary)] text-lg font-bold text-white">
+                      {couple.members[1].user.name.charAt(0)}
+                    </div>
+                  )}
+                </div>
+                <p className="mb-6 text-sm text-[var(--muted-foreground)]">{couple.title}</p>
+
+                <nav className="flex-1 space-y-1">
+                  <Link className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-[var(--muted-foreground)] hover:bg-[var(--surface)]" href="/settings" onClick={() => setSidebarOpen(false)}>
+                    <Settings className="size-5" /> 设置
+                  </Link>
+                </nav>
+
+                <div className="space-y-2 border-t border-[var(--border)] pt-4">
+                  <Button className="w-full justify-start gap-3" onClick={() => { toggleTheme(); setSidebarOpen(false); }} variant="ghost">
+                    <Palette className="size-5" /> 切换主题
+                  </Button>
+                  <Button className="w-full justify-start gap-3" onClick={handleLogout} variant="ghost">
+                    <LogOut className="size-5" /> 退出登录
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Main Content */}
+      <main className="flex-1 lg:ml-64">
+        <div className="mx-auto max-w-5xl px-4 py-6 pb-24 lg:px-8 lg:pb-8">
+          {children}
+        </div>
       </main>
     </div>
   );

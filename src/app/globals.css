@@ -1,95 +1,59 @@
 @import "tailwindcss";
 
-/* ===== 线条小狗主题系统 ===== */
+/* ===== 治愈风格主题系统 ===== */
 :root {
-  /* 蓝色主题 (清新蓝) - 默认 */
-  --primary: #5b9bd5;
-  --primary-light: #8bbde8;
-  --primary-dark: #3a7cb8;
+  --primary: #e8a0b0;
+  --primary-light: #f5d0da;
+  --primary-dark: #d08090;
   --primary-foreground: #ffffff;
 
-  --secondary: #f5a0b1;
-  --secondary-light: #f8c4cf;
-  --secondary-dark: #e87d93;
+  --secondary: #a0c4e8;
+  --secondary-light: #c8ddf2;
+  --secondary-dark: #78a8d4;
   --secondary-foreground: #ffffff;
 
-  --accent: #ffd166;
+  --accent: #f0d080;
+  --accent-light: #f8e8b0;
+  --accent-dark: #d0b060;
   --accent-foreground: #5a4a1a;
 
-  --bg-start: #e8f4f8;
-  --bg-mid: #f0f7fb;
-  --bg-end: #fdf2f5;
+  --bg-start: #fdf8f5;
+  --bg-mid: #f8f4f0;
+  --bg-end: #f5f0f8;
 
-  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-bg: rgba(255, 255, 255, 0.6);
   --glass-border: rgba(255, 255, 255, 0.5);
-  --glass-shadow: 0 8px 32px rgba(91, 155, 213, 0.12);
-  --glass-blur: 20px;
+  --glass-shadow: 0 8px 32px rgba(200, 180, 170, 0.1);
+  --glass-blur: 24px;
 
-  --surface: rgba(255, 255, 255, 0.65);
-  --surface-strong: rgba(255, 255, 255, 0.85);
+  --surface: rgba(255, 255, 255, 0.5);
+  --surface-strong: rgba(255, 255, 255, 0.8);
 
-  --foreground: #2c3e50;
-  --muted-foreground: #7a8ea0;
-  --border: rgba(91, 155, 213, 0.15);
+  --foreground: #3d3535;
+  --muted-foreground: #9a8a8a;
+  --border: rgba(200, 180, 170, 0.18);
   --ring: var(--primary);
 
-  --success: #6bc5a0;
-  --warning: #f5c842;
-  --danger: #f07070;
+  --success: #8cc4a8;
+  --warning: #f0c860;
+  --danger: #e88080;
 
-  --dog-golden: #f5c842;
-  --dog-golden-dark: #d4a52a;
-  --dog-white: #f8f8f8;
-  --dog-nose: #3a3a3a;
-  --dog-cheek: #f5a0b1;
-
-  --heart-pink: #f5a0b1;
-  --paw-brown: #c4a882;
-}
-
-/* 粉色主题 (樱花粉) */
-[data-theme="pink"] {
-  --primary: #e88ca5;
-  --primary-light: #f2b5c5;
-  --primary-dark: #d06a85;
-  --primary-foreground: #ffffff;
-
-  --secondary: #7ec8e3;
-  --secondary-light: #a8dcef;
-  --secondary-dark: #5aadd0;
-  --secondary-foreground: #ffffff;
-
-  --accent: #c5b3e6;
-  --accent-foreground: #3a2d5a;
-
-  --bg-start: #fdf2f5;
-  --bg-mid: #fef5f7;
-  --bg-end: #eef5fb;
-
-  --glass-bg: rgba(255, 240, 245, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.55);
-  --glass-shadow: 0 8px 32px rgba(232, 140, 165, 0.15);
-
-  --foreground: #3d2c35;
-  --muted-foreground: #9a7d8a;
-  --border: rgba(232, 140, 165, 0.15);
-
-  --dog-cheek: #f2b5c5;
+  --heart-click: rgba(232, 160, 176, 0.6);
 }
 
 /* ===== 全局样式 ===== */
 * { box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  font-family: "Geist", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: "Georgia", "Noto Serif SC", "PingFang SC", "Microsoft YaHei", serif;
   color: var(--foreground);
-  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+  background: linear-gradient(160deg, var(--bg-start) 0%, var(--bg-mid) 40%, var(--bg-end) 100%);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  transition: background 0.6s ease;
+  transition: background 0.8s ease;
+  overflow-x: hidden;
 }
 
 /* 背景装饰光晕 */
@@ -97,39 +61,39 @@ body::before, body::after {
   content: "";
   position: fixed;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.35;
+  filter: blur(100px);
+  opacity: 0.3;
   z-index: -1;
   pointer-events: none;
-  transition: all 0.8s ease;
+  transition: all 1s ease;
 }
 body::before {
-  width: 600px; height: 600px;
+  width: 500px; height: 500px;
   background: var(--primary-light);
-  top: -200px; right: -100px;
-  animation: blob-float 20s ease-in-out infinite;
+  top: -150px; right: -80px;
+  animation: blob 25s ease-in-out infinite;
 }
 body::after {
-  width: 500px; height: 500px;
+  width: 400px; height: 400px;
   background: var(--secondary-light);
-  bottom: -150px; left: -100px;
-  animation: blob-float 25s ease-in-out infinite reverse;
+  bottom: -100px; left: -60px;
+  animation: blob 30s ease-in-out infinite reverse;
 }
 
-@keyframes blob-float {
+@keyframes blob {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -40px) scale(1.05); }
-  66% { transform: translate(-20px, 30px) scale(0.95); }
+  33% { transform: translate(30px, -30px) scale(1.06); }
+  66% { transform: translate(-20px, 20px) scale(0.94); }
 }
 
 ::selection {
-  background: rgba(245, 160, 177, 0.3);
+  background: rgba(232, 160, 176, 0.25);
   color: var(--foreground);
 }
 
 button, input, textarea, select { font: inherit; }
 
-/* ===== 毛玻璃卡片 ===== */
+/* ===== 毛玻璃 ===== */
 .glass {
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
@@ -138,24 +102,29 @@ button, input, textarea, select { font: inherit; }
   box-shadow: var(--glass-shadow);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.glass:hover {
-  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
-  transform: translateY(-1px);
-}
 
 /* ===== 滚动条 ===== */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 /* ===== 动画 ===== */
-@keyframes gentle-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+@keyframes float-up {
+  0% { opacity: 0.8; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-120px) scale(0.6); }
 }
-@keyframes paw-walk {
-  0% { opacity: 0; transform: scale(0.8) rotate(-10deg); }
-  20% { opacity: 0.5; transform: scale(1) rotate(0deg); }
-  80% { opacity: 0.5; transform: scale(1) rotate(0deg); }
-  100% { opacity: 0; transform: scale(0.8) rotate(10deg); }
+
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1); }
 }
