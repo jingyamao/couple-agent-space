@@ -116,8 +116,8 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Mobile/Tablet Bottom Nav */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden">
-        <div className="glass mx-3 mb-3 flex items-center justify-around rounded-2xl px-2 py-2">
+      <div className="fixed bottom-0 left-0 right-0 z-40 overflow-hidden lg:hidden">
+        <div className="glass mx-2 mb-2 flex items-center justify-around rounded-2xl px-1 py-2 sm:mx-3 sm:mb-3 sm:px-2">
           {navItems.slice(0, 5).map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
@@ -208,8 +208,8 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="flex-1 lg:ml-64">
-        <div className="mx-auto max-w-5xl px-4 py-6 pb-24 lg:px-8 lg:pb-8">
+      <main className="min-w-0 flex-1 lg:ml-64">
+        <div className="mx-auto max-w-5xl px-4 py-6 pb-24 sm:px-6 lg:px-8 lg:pb-8">
           {children}
         </div>
       </main>

@@ -75,9 +75,9 @@ export default function DiariesPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {diaries.map((d, i) => (
-            <motion.div key={d.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.05 }}>
-              <Card className="flex h-full flex-col">
-                <CardContent className="flex flex-1 flex-col p-5">
+            <motion.div className="flex" key={d.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.05 }}>
+              <Card className="flex flex-1 flex-col">
+                <CardContent className="flex flex-1 flex-col justify-between p-5">
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="font-semibold" style={{ fontFamily: "var(--font-serif)" }}>{d.title}</h3>
                     <Badge tone={visTones[d.visibility]}>{visLabels[d.visibility]}</Badge>

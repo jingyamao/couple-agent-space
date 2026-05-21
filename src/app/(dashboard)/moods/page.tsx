@@ -73,9 +73,9 @@ export default function MoodsPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {moods.map((m, i) => (
-            <motion.div key={m.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.05 }}>
-              <Card>
-                <CardContent className="p-5">
+            <motion.div className="flex" key={m.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.05 }}>
+              <Card className="flex flex-1 flex-col">
+                <CardContent className="flex flex-1 flex-col justify-between p-5">
                   <div className="flex items-start justify-between">
                     <div><p className="font-semibold">{m.user.name}</p><p className="mt-1 text-lg" style={{ fontFamily: "var(--font-serif)" }}>{m.mood}</p></div>
                     <Badge tone={energyTones[m.energy]}>{energyOpts.find((e) => e.value === m.energy)?.label}</Badge>

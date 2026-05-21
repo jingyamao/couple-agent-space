@@ -68,8 +68,8 @@ export function FloatingParticles() {
         p.opacity *= 0.999;
 
         ctx!.globalAlpha = p.opacity;
-        ctx!.fillStyle = "var(--primary-light)";
-        ctx!.strokeStyle = "var(--primary-light)";
+        ctx!.fillStyle = "#e8b8c4";
+        ctx!.strokeStyle = "#e8b8c4";
 
         if (p.type === "heart") {
           drawHeart(ctx!, p.x, p.y, p.size);

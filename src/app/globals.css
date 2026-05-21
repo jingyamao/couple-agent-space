@@ -2,48 +2,49 @@
 
 /* ===== 治愈风格主题系统 ===== */
 :root {
-  --primary: #e8a0b0;
-  --primary-light: #f5d0da;
-  --primary-dark: #d08090;
+  --primary: #e8b8c4;
+  --primary-light: #f5e0e6;
+  --primary-dark: #d8a0ae;
   --primary-foreground: #ffffff;
 
-  --secondary: #a0c4e8;
-  --secondary-light: #c8ddf2;
-  --secondary-dark: #78a8d4;
+  --secondary: #b4d4ea;
+  --secondary-light: #d8eaf5;
+  --secondary-dark: #90bcd8;
   --secondary-foreground: #ffffff;
 
-  --accent: #f0d080;
-  --accent-light: #f8e8b0;
-  --accent-dark: #d0b060;
-  --accent-foreground: #5a4a1a;
+  --accent: #f5dfa0;
+  --accent-light: #faf0d0;
+  --accent-dark: #e0c880;
+  --accent-foreground: #6a5a2a;
 
-  --bg-start: #fdf8f5;
-  --bg-mid: #f8f4f0;
-  --bg-end: #f5f0f8;
+  --bg-start: #fefcfa;
+  --bg-mid: #faf8f6;
+  --bg-end: #f8f6fa;
 
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.5);
-  --glass-shadow: 0 8px 32px rgba(200, 180, 170, 0.1);
-  --glass-blur: 24px;
+  --glass-bg: rgba(255, 255, 255, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.45);
+  --glass-shadow: 0 4px 24px rgba(200, 180, 170, 0.08);
+  --glass-blur: 20px;
 
-  --surface: rgba(255, 255, 255, 0.5);
-  --surface-strong: rgba(255, 255, 255, 0.8);
+  --surface: rgba(255, 255, 255, 0.4);
+  --surface-strong: rgba(255, 255, 255, 0.7);
 
-  --foreground: #3d3535;
-  --muted-foreground: #9a8a8a;
-  --border: rgba(200, 180, 170, 0.18);
+  --foreground: #4a4040;
+  --muted-foreground: #a89898;
+  --border: rgba(200, 180, 170, 0.12);
   --ring: var(--primary);
 
-  --success: #8cc4a8;
-  --warning: #f0c860;
-  --danger: #e88080;
+  --success: #a0d4b8;
+  --warning: #f5d878;
+  --danger: #e8a0a0;
 
-  --heart-click: rgba(232, 160, 176, 0.6);
+  --heart-click: rgba(232, 184, 196, 0.6);
 }
 
 /* ===== 全局样式 ===== */
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+#__next { overflow-x: hidden; }
 
 body {
   margin: 0;

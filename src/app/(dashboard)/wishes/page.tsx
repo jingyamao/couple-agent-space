@@ -86,9 +86,9 @@ export default function WishesPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {wishes.map((w, i) => (
-            <motion.div key={w.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.05 }}>
-              <Card>
-                <CardContent className="p-5">
+            <motion.div className="flex" key={w.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.05 }}>
+              <Card className="flex flex-1 flex-col">
+                <CardContent className="flex flex-1 flex-col justify-between p-5">
                   <div className="flex items-start justify-between">
                     <div><h3 className="font-semibold" style={{ fontFamily: "var(--font-serif)" }}>{w.title}</h3><p className="text-xs text-[var(--muted-foreground)]">{w.category}</p></div>
                     <Badge tone={statusTones[w.status]}>{statusLabels[w.status]}</Badge>

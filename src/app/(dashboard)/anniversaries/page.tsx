@@ -79,9 +79,9 @@ export default function AnniversariesPage() {
           {items.map((a, i) => {
             const days = getDaysUntil(a.happenedAt);
             return (
-              <motion.div key={a.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.05 }}>
-                <Card>
-                  <CardContent className="p-5">
+              <motion.div className="flex" key={a.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.05 }}>
+                <Card className="flex flex-1 flex-col">
+                  <CardContent className="flex flex-1 flex-col justify-between p-5">
                     <div className="flex items-start justify-between">
                       <h3 className="font-semibold" style={{ fontFamily: "var(--font-serif)" }}>{a.title}</h3>
                       <Badge tone={days <= 7 ? "rose" : days <= 30 ? "gold" : "teal"}>{days === 0 ? "就是今天！" : `${days} 天后`}</Badge>
