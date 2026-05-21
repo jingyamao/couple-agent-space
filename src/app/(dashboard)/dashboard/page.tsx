@@ -75,7 +75,7 @@ export default function DashboardPage() {
       {/* Hero Section */}
       <div className="grid gap-4 rounded-lg border border-[var(--border)] bg-white p-5 shadow-sm sm:grid-cols-[1.1fr_0.9fr]">
         <div>
-          <Badge tone="rose">已在一起 {data.daysTogether} 天</Badge>
+          <Badge tone="rose">已在一起 {data.couple.daysTogether ?? 0} 天</Badge>
           <h2 className="mt-4 max-w-2xl text-2xl font-semibold tracking-normal text-[#24201c] sm:text-3xl">
             今天也把关系照顾得轻一点、稳一点。
           </h2>
@@ -110,11 +110,11 @@ export default function DashboardPage() {
           </div>
           <p className="mt-8 text-sm text-[#cce0df]">共同愿望进度</p>
           <p className="mt-2 text-5xl font-semibold">
-            {data.wishes.completionPercent}%
+            {data.wishes.progress}%
           </p>
           <Progress
             className="mt-5 bg-[#2a666b]"
-            value={data.wishes.completionPercent}
+            value={data.wishes.progress}
           />
           <p className="mt-5 text-sm leading-6 text-[#dceff0]">
             共 {data.wishes.items.length} 个愿望，
@@ -266,7 +266,7 @@ export default function DashboardPage() {
                                 : "灵感"}
                         </Badge>
                       </div>
-                      <Progress value={wish.completionPercent} />
+                      <Progress value={wish.status === "DONE" ? 100 : wish.status === "PLANNED" ? 50 : 0} />
                     </div>
                   ))}
                 </div>

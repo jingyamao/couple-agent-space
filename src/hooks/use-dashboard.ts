@@ -73,13 +73,13 @@ export type DashboardData = {
     title: string;
     startedAt: string | null;
     inviteCode: string;
+    daysTogether: number | null;
+    members: DashboardMember[];
   };
-  daysTogether: number;
-  members: DashboardMember[];
   anniversaries: DashboardAnniversary[];
   moodCheckIns: DashboardMood[];
   diaryEntries: DashboardDiary[];
-  wishes: { items: DashboardWish[]; completionPercent: number };
+  wishes: { items: DashboardWish[]; progress: number };
   photos: DashboardPhoto[];
   timeCapsules: DashboardTimeCapsule[];
 };

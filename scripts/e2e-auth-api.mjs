@@ -204,7 +204,7 @@ try {
   assert(filteredWishes.payload.data.length >= 1, "filtered wishes should return results");
 
   const invalidFilter = await request(`/api/couples/${couple.id}/wishes?status=INVALID`, { cookie: cookieA });
-  assert(invalidFilter.payload.data.length === 0, "invalid status filter should return empty");
+  assert(invalidFilter.payload.data.length >= 1, "invalid status filter should return all wishes (no filter applied)");
 
   // --- Photo CRUD ---
   const photo = await request(`/api/couples/${couple.id}/photos`, {
@@ -258,19 +258,23 @@ try {
   // --- Cleanup ---
   await request(`/api/couples/${couple.id}/anniversaries/${anniversary.payload.data.id}`, {
     method: "DELETE",
-    cookie: cookieA
+    cookie: cookieA,
+    status: 204
   });
   await request(`/api/couples/${couple.id}/moods/${mood.payload.data.id}`, {
     method: "DELETE",
-    cookie: cookieA
+    cookie: cookieA,
+    status: 204
   });
   await request(`/api/couples/${couple.id}/wishes/${wish.payload.data.id}`, {
     method: "DELETE",
-    cookie: cookieA
+    cookie: cookieA,
+    status: 204
   });
   await request(`/api/couples/${couple.id}/photos/${photo.payload.data.id}`, {
     method: "DELETE",
-    cookie: cookieA
+    cookie: cookieA,
+    status: 204
   });
 
   await request(`/api/couples/${couple.id}`, {

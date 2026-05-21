@@ -34,6 +34,11 @@ export default function RegisterPage() {
       return;
     }
 
+    if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+      setError("密码需包含大写字母、小写字母和数字");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -43,6 +48,10 @@ export default function RegisterPage() {
       if (err instanceof ApiClientError) {
         if (err.code === "EMAIL_ALREADY_EXISTS") {
           setError("该邮箱已被注册");
+        } else if (err.code === "VALIDATION_ERROR" && err.detail) {
+          const detail = err.detail as { fieldErrors?: Record<string, string[]> };
+          const messages = Object.values(detail.fieldErrors ?? {}).flat();
+          setError(messages.length > 0 ? messages[0] : err.message);
         } else {
           setError(err.message);
         }
@@ -100,7 +109,7 @@ export default function RegisterPage() {
             label="密码"
             name="password"
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="至少 8 个字符"
+            placeholder="至少 8 位，包含大小写字母和数字"
             required
             type="password"
             value={password}

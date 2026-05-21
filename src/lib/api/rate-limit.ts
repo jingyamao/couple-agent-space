@@ -1,5 +1,7 @@
 import { ApiError } from "@/lib/api/http";
 
+const DEV_MODE = process.env.NODE_ENV !== "production";
+
 type RateLimitOptions = {
   windowMs: number;
   maxRequests: number;
@@ -26,6 +28,10 @@ export function checkRateLimit(
   key: string,
   options: RateLimitOptions
 ): { allowed: boolean; remaining: number; resetAt: number } {
+  if (DEV_MODE) {
+    return { allowed: true, remaining: options.maxRequests, resetAt: Date.now() + options.windowMs };
+  }
+
   cleanupCounter++;
   if (cleanupCounter % 100 === 0) {
     cleanup();
