@@ -21,13 +21,13 @@
   --bg-mid: #faf8f6;
   --bg-end: #f8f6fa;
 
-  --glass-bg: rgba(255, 255, 255, 0.5);
-  --glass-border: rgba(255, 255, 255, 0.45);
-  --glass-shadow: 0 4px 24px rgba(200, 180, 170, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 4px 24px rgba(200, 180, 170, 0.1);
   --glass-blur: 20px;
 
-  --surface: rgba(255, 255, 255, 0.4);
-  --surface-strong: rgba(255, 255, 255, 0.7);
+  --surface: rgba(255, 255, 255, 0.55);
+  --surface-strong: rgba(255, 255, 255, 0.82);
 
   --foreground: #4a4040;
   --muted-foreground: #a89898;
@@ -39,6 +39,39 @@
   --danger: #e8a0a0;
 
   --heart-click: rgba(232, 184, 196, 0.6);
+}
+
+/* 粉色主题 (樱花粉) */
+[data-theme="pink"] {
+  --primary: #e8a0b8;
+  --primary-light: #f5d0de;
+  --primary-dark: #d088a0;
+  --primary-foreground: #ffffff;
+
+  --secondary: #a8c8e0;
+  --secondary-light: #d0e4f0;
+  --secondary-dark: #88b0cc;
+  --secondary-foreground: #ffffff;
+
+  --accent: #d8b8e8;
+  --accent-light: #e8d4f2;
+  --accent-dark: #c0a0d0;
+  --accent-foreground: #4a3060;
+
+  --bg-start: #fef8fa;
+  --bg-mid: #fdf6f8;
+  --bg-end: #f6f4fa;
+
+  --glass-bg: rgba(255, 245, 248, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 4px 24px rgba(200, 170, 180, 0.1);
+
+  --surface: rgba(255, 248, 250, 0.55);
+  --surface-strong: rgba(255, 250, 252, 0.82);
+
+  --foreground: #4a3840;
+  --muted-foreground: #b09898;
+  --border: rgba(200, 170, 180, 0.12);
 }
 
 /* ===== 全局样式 ===== */

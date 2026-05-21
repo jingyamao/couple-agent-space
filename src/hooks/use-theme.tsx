@@ -30,8 +30,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setTheme(theme === "blue" ? "pink" : "blue");
-  }, [theme, setTheme]);
+    setThemeState((prev) => {
+      const next = prev === "blue" ? "pink" : "blue";
+      localStorage.setItem("line-dog-theme", next);
+      document.documentElement.setAttribute("data-theme", next);
+      return next;
+    });
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
