@@ -17,35 +17,26 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="space-y-1.5">
         {label ? (
-          <label
-            className="block text-sm text-[var(--muted-foreground)]"
-            htmlFor={inputId}
-          >
+          <label className="block text-sm font-medium text-[var(--muted-foreground)]" htmlFor={inputId}>
             {label}
           </label>
         ) : null}
         <select
           className={cn(
-            "h-10 w-full rounded-md border border-[var(--border)] bg-[#fffdf9] px-3 text-sm outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[rgba(194,59,74,0.14)]",
-            error && "border-[var(--primary)]",
+            "h-10 w-full rounded-xl border border-[var(--border)] bg-[var(--glass-bg)] backdrop-blur-sm px-3.5 text-sm outline-none transition-all duration-200 focus:border-[var(--primary)] focus:ring-2 focus:ring-[rgba(91,155,213,0.2)]",
+            error && "border-[var(--danger)]",
             className
           )}
           id={inputId}
           ref={ref}
           {...props}
         >
-          {placeholder ? (
-            <option value="">{placeholder}</option>
-          ) : null}
+          {placeholder ? <option value="">{placeholder}</option> : null}
           {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
+            <option key={option.value} value={option.value}>{option.label}</option>
           ))}
         </select>
-        {error ? (
-          <p className="text-xs text-[var(--primary)]">{error}</p>
-        ) : null}
+        {error ? <p className="text-xs text-[var(--danger)]">{error}</p> : null}
       </div>
     );
   }

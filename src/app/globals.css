@@ -1,52 +1,161 @@
 @import "tailwindcss";
 
+/* ===== 线条小狗主题系统 ===== */
 :root {
-  --background: #fbfaf8;
-  --foreground: #24201c;
-  --muted: #f1efeb;
-  --muted-foreground: #716a61;
-  --border: #ded8d0;
-  --primary: #c23b4a;
-  --primary-foreground: #fff7f8;
-  --secondary: #196f75;
-  --secondary-foreground: #f4ffff;
-  --accent: #e7aa2e;
-  --accent-foreground: #251a05;
-  --surface: #ffffff;
-  --surface-strong: #f7f3ed;
-  --ring: #c23b4a;
+  /* 蓝色主题 (清新蓝) - 默认 */
+  --primary: #5b9bd5;
+  --primary-light: #8bbde8;
+  --primary-dark: #3a7cb8;
+  --primary-foreground: #ffffff;
+
+  --secondary: #f5a0b1;
+  --secondary-light: #f8c4cf;
+  --secondary-dark: #e87d93;
+  --secondary-foreground: #ffffff;
+
+  --accent: #ffd166;
+  --accent-foreground: #5a4a1a;
+
+  --bg-start: #e8f4f8;
+  --bg-mid: #f0f7fb;
+  --bg-end: #fdf2f5;
+
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px rgba(91, 155, 213, 0.12);
+  --glass-blur: 20px;
+
+  --surface: rgba(255, 255, 255, 0.65);
+  --surface-strong: rgba(255, 255, 255, 0.85);
+
+  --foreground: #2c3e50;
+  --muted-foreground: #7a8ea0;
+  --border: rgba(91, 155, 213, 0.15);
+  --ring: var(--primary);
+
+  --success: #6bc5a0;
+  --warning: #f5c842;
+  --danger: #f07070;
+
+  --dog-golden: #f5c842;
+  --dog-golden-dark: #d4a52a;
+  --dog-white: #f8f8f8;
+  --dog-nose: #3a3a3a;
+  --dog-cheek: #f5a0b1;
+
+  --heart-pink: #f5a0b1;
+  --paw-brown: #c4a882;
 }
 
-* {
-  box-sizing: border-box;
+/* 粉色主题 (樱花粉) */
+[data-theme="pink"] {
+  --primary: #e88ca5;
+  --primary-light: #f2b5c5;
+  --primary-dark: #d06a85;
+  --primary-foreground: #ffffff;
+
+  --secondary: #7ec8e3;
+  --secondary-light: #a8dcef;
+  --secondary-dark: #5aadd0;
+  --secondary-foreground: #ffffff;
+
+  --accent: #c5b3e6;
+  --accent-foreground: #3a2d5a;
+
+  --bg-start: #fdf2f5;
+  --bg-mid: #fef5f7;
+  --bg-end: #eef5fb;
+
+  --glass-bg: rgba(255, 240, 245, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-shadow: 0 8px 32px rgba(232, 140, 165, 0.15);
+
+  --foreground: #3d2c35;
+  --muted-foreground: #9a7d8a;
+  --border: rgba(232, 140, 165, 0.15);
+
+  --dog-cheek: #f2b5c5;
 }
 
-html {
-  background: var(--background);
-  color: var(--foreground);
-}
+/* ===== 全局样式 ===== */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
-  min-height: 100vh;
   margin: 0;
-  background:
-    linear-gradient(180deg, rgba(251, 250, 248, 0.96), rgba(247, 243, 237, 0.92)),
-    var(--background);
+  font-family: "Geist", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
   color: var(--foreground);
-  font-family:
-    var(--font-geist-sans),
-    "PingFang SC",
-    "Microsoft YaHei",
-    Arial,
-    sans-serif;
+  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.6s ease;
 }
 
-button,
-input,
-textarea {
-  font: inherit;
+/* 背景装饰光晕 */
+body::before, body::after {
+  content: "";
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  z-index: -1;
+  pointer-events: none;
+  transition: all 0.8s ease;
+}
+body::before {
+  width: 600px; height: 600px;
+  background: var(--primary-light);
+  top: -200px; right: -100px;
+  animation: blob-float 20s ease-in-out infinite;
+}
+body::after {
+  width: 500px; height: 500px;
+  background: var(--secondary-light);
+  bottom: -150px; left: -100px;
+  animation: blob-float 25s ease-in-out infinite reverse;
+}
+
+@keyframes blob-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.05); }
+  66% { transform: translate(-20px, 30px) scale(0.95); }
 }
 
 ::selection {
-  background: rgba(194, 59, 74, 0.18);
+  background: rgba(245, 160, 177, 0.3);
+  color: var(--foreground);
+}
+
+button, input, textarea, select { font: inherit; }
+
+/* ===== 毛玻璃卡片 ===== */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass:hover {
+  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
+
+/* ===== 滚动条 ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ===== 动画 ===== */
+@keyframes gentle-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes paw-walk {
+  0% { opacity: 0; transform: scale(0.8) rotate(-10deg); }
+  20% { opacity: 0.5; transform: scale(1) rotate(0deg); }
+  80% { opacity: 0.5; transform: scale(1) rotate(0deg); }
+  100% { opacity: 0; transform: scale(0.8) rotate(10deg); }
 }

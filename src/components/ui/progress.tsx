@@ -13,12 +13,15 @@ export function Progress({ value, className }: ProgressProps) {
       aria-valuemax={100}
       aria-valuemin={0}
       aria-valuenow={safeValue}
-      className={cn("h-2 overflow-hidden rounded-full bg-[#e7dfd5]", className)}
+      className={cn("h-2.5 overflow-hidden rounded-full bg-[var(--border)]", className)}
       role="progressbar"
     >
       <div
-        className="h-full rounded-full bg-[var(--secondary)] transition-all"
-        style={{ width: `${safeValue}%` }}
+        className="h-full rounded-full transition-all duration-700 ease-out"
+        style={{
+          width: `${safeValue}%`,
+          background: `linear-gradient(90deg, var(--primary), var(--secondary))`
+        }}
       />
     </div>
   );
