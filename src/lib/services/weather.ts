@@ -1,4 +1,4 @@
-const AMAP_KEY = process.env.AMAP_JS_KEY ?? "";
+const AMAP_KEY = process.env.AMAP_SERVICE_KEY ?? process.env.AMAP_JS_KEY ?? "";
 
 type WeatherResult = {
   city: string;
