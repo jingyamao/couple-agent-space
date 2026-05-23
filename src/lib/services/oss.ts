@@ -86,9 +86,12 @@ export function generateSignedUrl(key: string, expiresIn = 3600): string {
 export function signOssUrl(url: string, expiresIn = 3600): string {
   if (!url || !isOssConfigured()) return url;
 
+  // 已经有签名的 URL 不再签名
+  if (url.includes("OSSAccessKeyId=") || url.includes("Signature=")) return url;
+
   const prefix = `https://${BUCKET}.${REGION}.aliyuncs.com/`;
   if (!url.startsWith(prefix)) return url;
 
-  const key = url.slice(prefix.length);
+  const key = url.slice(prefix.length).split("?")[0];
   return generateSignedUrl(key, expiresIn);
 }
