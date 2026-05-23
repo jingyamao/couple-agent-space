@@ -10,7 +10,7 @@ export async function POST(request: Request) {
 
     const couple = await prisma.couple.findUnique({
       where: { inviteCode: input.inviteCode },
-      include: { members: true }
+      include: { members: { include: { user: true } } }
     });
 
     if (!couple) {
@@ -33,16 +33,26 @@ export async function POST(request: Request) {
       throw new ApiError(409, "COUPLE_FULL", "该情侣空间已经有两位成员");
     }
 
-    const membership = await prisma.coupleMember.create({
-      data: {
-        coupleId: couple.id,
-        userId,
-        role: "PARTNER"
-      },
-      include: {
-        couple: true,
-        user: true
+    const membership = await prisma.$transaction(async (tx) => {
+      const count = await tx.coupleMember.count({
+        where: { coupleId: couple.id }
+      });
+
+      if (count >= 2) {
+        throw new ApiError(409, "COUPLE_FULL", "该情侣空间已经有两位成员");
       }
+
+      return tx.coupleMember.create({
+        data: {
+          coupleId: couple.id,
+          userId,
+          role: "PARTNER"
+        },
+        include: {
+          couple: true,
+          user: true
+        }
+      });
     });
 
     return created(membership);

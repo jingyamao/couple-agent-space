@@ -36,12 +36,15 @@ export async function GET(request: Request, context: RouteContext) {
   try {
     const { coupleId, wishId } = await context.params;
     await requireCoupleMember(coupleId, await getRequesterId(request));
-    await requireWish(coupleId, wishId);
 
-    const wish = await prisma.wish.findUnique({
-      where: { id: wishId },
+    const wish = await prisma.wish.findFirst({
+      where: { id: wishId, coupleId },
       include: { creator: true }
     });
+
+    if (!wish) {
+      throw new ApiError(404, "WISH_NOT_FOUND", "愿望不存在");
+    }
 
     return ok(wish);
   } catch (error) {

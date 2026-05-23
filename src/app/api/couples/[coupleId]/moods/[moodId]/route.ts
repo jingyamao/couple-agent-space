@@ -7,6 +7,7 @@ import {
   parseOptionalJson
 } from "@/lib/api/http";
 import {
+  getRequesterId,
   requireCoupleMember,
   resolveActorId
 } from "@/lib/api/guards";
@@ -34,6 +35,26 @@ async function requireMood(coupleId: string, moodId: string) {
 function assertCanEditMood(mood: { userId: string }, userId?: string) {
   if (mood.userId !== userId) {
     throw new ApiError(403, "MOOD_OWNER_REQUIRED", "只能修改自己的心情记录");
+  }
+}
+
+export async function GET(request: Request, context: RouteContext) {
+  try {
+    const { coupleId, moodId } = await context.params;
+    await requireCoupleMember(coupleId, await getRequesterId(request));
+
+    const mood = await prisma.moodCheckIn.findFirst({
+      where: { id: moodId, coupleId },
+      include: { user: true }
+    });
+
+    if (!mood) {
+      throw new ApiError(404, "MOOD_NOT_FOUND", "心情记录不存在");
+    }
+
+    return ok(mood);
+  } catch (error) {
+    return handleApiError(error);
   }
 }
 

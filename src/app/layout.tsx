@@ -15,7 +15,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" data-theme="blue" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem("line-dog-theme");if(t==="pink"||t==="blue")document.documentElement.setAttribute("data-theme",t)}catch(e){}})()` }} />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${notoSerif.variable}`}>
         <ClientProviders>{children}</ClientProviders>
       </body>

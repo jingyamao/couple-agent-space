@@ -90,7 +90,7 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
                 <Link
                   className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? "bg-[rgba(232,160,176,0.12)] text-[var(--primary-dark)]"
+                      ? "bg-[var(--nav-active)] text-[var(--primary-dark)]"
                       : "text-[var(--muted-foreground)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
                   }`}
                   href={item.href}

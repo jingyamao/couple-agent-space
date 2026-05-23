@@ -90,10 +90,10 @@ export default function DashboardPage() {
       {/* Stats Grid */}
       <motion.div {...fade} transition={{ duration: 0.5, delay: 0.1 }} className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
-          { label: "下一纪念日", value: nextAnniversary?.title ?? "暂无", sub: daysUntil !== null ? `${daysUntil} 天后` : "" },
           { label: "在一起", value: `${data.couple.daysTogether ?? 0}`, sub: "天" },
           { label: "愿望进度", value: `${data.wishes.progress}%`, sub: `${data.wishes.items.length} 个愿望` },
-          { label: "日记", value: `${data.diaryEntries.length}`, sub: "篇" }
+          { label: "日记", value: `${data.diaryEntries.length}`, sub: "篇" },
+          { label: "心情", value: `${data.moodCheckIns.length}`, sub: "条记录" }
         ].map((s, i) => (
           <motion.div key={s.label} {...fade} transition={{ duration: 0.4, delay: 0.1 + i * 0.05 }}>
             <Card>
@@ -126,6 +126,45 @@ export default function DashboardPage() {
           );
         })}
       </motion.div>
+
+      {/* Anniversary Countdown */}
+      {data.anniversaries.length > 0 && (
+        <motion.div {...fade} transition={{ duration: 0.5, delay: 0.18 }}>
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-bold" style={{ fontFamily: "var(--font-serif)" }}>纪念日倒计时</h2>
+                <Link className="text-sm text-[var(--primary-dark)]" href="/anniversaries">管理</Link>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {data.anniversaries.slice(0, 6).map((a, i) => {
+                  const next = getNextOccurrence(a.happenedAt);
+                  const days = differenceInDays(next, new Date());
+                  return (
+                    <motion.div key={a.id} {...fade} transition={{ delay: i * 0.05 }} className="flex items-center gap-3 rounded-2xl bg-[var(--surface)] p-3">
+                      <div className={`flex size-12 flex-col items-center justify-center rounded-xl ${days <= 7 ? "bg-[rgba(232,160,160,0.15)]" : days <= 30 ? "bg-[rgba(245,223,160,0.15)]" : "bg-[rgba(180,212,234,0.15)]"}`}>
+                        <span className="text-lg font-bold" style={{ fontFamily: "var(--font-serif)" }}>{days}</span>
+                        <span className="text-[10px] text-[var(--muted-foreground)]">天</span>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate font-medium">{a.title}</p>
+                        <p className="text-xs text-[var(--muted-foreground)]">{format(new Date(a.happenedAt), "MM月dd日")}</p>
+                      </div>
+                      {days <= 7 && (
+                        <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                          <Heart className="size-4 text-[var(--primary)]" />
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
 
       {/* Main Content */}
       <motion.div {...fade} transition={{ duration: 0.5, delay: 0.2 }} className="grid gap-6 lg:grid-cols-[1fr_340px]">
@@ -200,7 +239,7 @@ export default function DashboardPage() {
                 <div className="space-y-3">
                   {data.diaryEntries.slice(0, 3).map((d, i) => (
                     <motion.div key={d.id} {...fade} transition={{ delay: i * 0.05 }} className="flex gap-3">
-                      <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl bg-[rgba(232,160,176,0.1)] text-[var(--primary)]">
+                      <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl bg-[var(--nav-active)] text-[var(--primary)]">
                         <BookHeart className="size-4" />
                       </div>
                       <div className="min-w-0">

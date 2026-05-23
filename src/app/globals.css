@@ -2,76 +2,84 @@
 
 /* ===== 治愈风格主题系统 ===== */
 :root {
-  --primary: #e8b8c4;
-  --primary-light: #f5e0e6;
-  --primary-dark: #d8a0ae;
+  --primary: #d4899e;
+  --primary-light: #e8b0c4;
+  --primary-dark: #b86a82;
   --primary-foreground: #ffffff;
 
-  --secondary: #b4d4ea;
-  --secondary-light: #d8eaf5;
-  --secondary-dark: #90bcd8;
+  --secondary: #8cb8d8;
+  --secondary-light: #b4d4ea;
+  --secondary-dark: #6a9ec4;
   --secondary-foreground: #ffffff;
 
-  --accent: #f5dfa0;
-  --accent-light: #faf0d0;
-  --accent-dark: #e0c880;
-  --accent-foreground: #6a5a2a;
+  --accent: #e8c870;
+  --accent-light: #f0dc9c;
+  --accent-dark: #d0a840;
+  --accent-foreground: #5a4a1a;
 
-  --bg-start: #fefcfa;
-  --bg-mid: #faf8f6;
-  --bg-end: #f8f6fa;
+  --bg-start: #faf6f2;
+  --bg-mid: #f5f0ec;
+  --bg-end: #f2eef5;
 
-  --glass-bg: rgba(255, 255, 255, 0.72);
-  --glass-border: rgba(255, 255, 255, 0.6);
-  --glass-shadow: 0 4px 24px rgba(200, 180, 170, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(200, 180, 170, 0.2);
+  --glass-shadow: 0 4px 24px rgba(180, 160, 150, 0.15);
   --glass-blur: 20px;
 
-  --surface: rgba(255, 255, 255, 0.55);
-  --surface-strong: rgba(255, 255, 255, 0.82);
+  --surface: rgba(255, 255, 255, 0.65);
+  --surface-strong: rgba(255, 255, 255, 0.88);
 
-  --foreground: #4a4040;
-  --muted-foreground: #a89898;
-  --border: rgba(200, 180, 170, 0.12);
+  --foreground: #3a3030;
+  --muted-foreground: #887878;
+  --border: rgba(180, 160, 150, 0.18);
   --ring: var(--primary);
 
-  --success: #a0d4b8;
-  --warning: #f5d878;
-  --danger: #e8a0a0;
+  --success: #78c098;
+  --warning: #e8c050;
+  --danger: #d88080;
 
-  --heart-click: rgba(232, 184, 196, 0.6);
+  --heart-click: rgba(212, 137, 158, 0.6);
+  --nav-active: rgba(212, 137, 158, 0.15);
+  --secondary-bg: rgba(140, 184, 216, 0.12);
+  --danger-bg: rgba(216, 128, 128, 0.08);
+  --danger-ring: rgba(216, 128, 128, 0.15);
 }
 
 /* 粉色主题 (樱花粉) */
 [data-theme="pink"] {
-  --primary: #e8a0b8;
-  --primary-light: #f5d0de;
-  --primary-dark: #d088a0;
+  --primary: #d88098;
+  --primary-light: #e8a8c0;
+  --primary-dark: #c06880;
   --primary-foreground: #ffffff;
 
-  --secondary: #a8c8e0;
-  --secondary-light: #d0e4f0;
-  --secondary-dark: #88b0cc;
+  --secondary: #88b0d0;
+  --secondary-light: #b0d0e8;
+  --secondary-dark: #6898bc;
   --secondary-foreground: #ffffff;
 
-  --accent: #d8b8e8;
-  --accent-light: #e8d4f2;
-  --accent-dark: #c0a0d0;
-  --accent-foreground: #4a3060;
+  --accent: #c098d8;
+  --accent-light: #d8b8e8;
+  --accent-dark: #a878c0;
+  --accent-foreground: #3a2050;
 
-  --bg-start: #fef8fa;
-  --bg-mid: #fdf6f8;
-  --bg-end: #f6f4fa;
+  --bg-start: #faf4f6;
+  --bg-mid: #f6eef2;
+  --bg-end: #f0ecf5;
 
-  --glass-bg: rgba(255, 245, 248, 0.72);
-  --glass-border: rgba(255, 255, 255, 0.6);
-  --glass-shadow: 0 4px 24px rgba(200, 170, 180, 0.1);
+  --glass-bg: rgba(255, 245, 248, 0.78);
+  --glass-border: rgba(220, 180, 190, 0.2);
+  --glass-shadow: 0 4px 24px rgba(200, 160, 170, 0.15);
 
-  --surface: rgba(255, 248, 250, 0.55);
-  --surface-strong: rgba(255, 250, 252, 0.82);
+  --surface: rgba(255, 245, 248, 0.65);
+  --surface-strong: rgba(255, 248, 250, 0.88);
 
-  --foreground: #4a3840;
-  --muted-foreground: #b09898;
-  --border: rgba(200, 170, 180, 0.12);
+  --foreground: #3a2830;
+  --muted-foreground: #907878;
+  --border: rgba(200, 160, 170, 0.18);
+  --nav-active: rgba(216, 128, 152, 0.15);
+  --secondary-bg: rgba(136, 176, 208, 0.12);
+  --danger-bg: rgba(216, 128, 128, 0.08);
+  --danger-ring: rgba(216, 128, 128, 0.15);
 }
 
 /* ===== 全局样式 ===== */
@@ -121,7 +129,7 @@ body::after {
 }
 
 ::selection {
-  background: rgba(232, 160, 176, 0.25);
+  background: var(--nav-active);
   color: var(--foreground);
 }
 

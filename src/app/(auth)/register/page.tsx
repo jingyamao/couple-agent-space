@@ -55,7 +55,7 @@ export default function RegisterPage() {
           </div>
 
           <form className="space-y-5" onSubmit={handleSubmit}>
-            {error && <div className="rounded-2xl bg-[rgba(232,128,128,0.08)] p-3 text-center text-sm text-[var(--danger)]">{error}</div>}
+            {error && <div className="rounded-2xl bg-[var(--danger-bg)] p-3 text-center text-sm text-[var(--danger)]">{error}</div>}
             <Input label="姓名" name="name" onChange={(e) => setName(e.target.value)} placeholder="你的名字" required value={name} />
             <Input label="邮箱" name="email" onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com" required type="email" value={email} />
             <Input label="密码" name="password" onChange={(e) => setPassword(e.target.value)} placeholder="至少 8 位，包含大小写和数字" required type="password" value={password} />

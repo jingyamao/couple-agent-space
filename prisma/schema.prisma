@@ -58,6 +58,7 @@ model User {
   photos           Photo[]
   agentRuns        AgentRun[]
   wishStatusHistory WishStatusHistory[]
+  notifications    Notification[]
 }
 
 model AuthSession {
@@ -94,6 +95,7 @@ model Couple {
   timeCapsules         TimeCapsule[]
   agentMemories        AgentMemory[]
   agentRuns            AgentRun[]
+  notifications        Notification[]
 }
 
 model CoupleMember {
@@ -245,4 +247,21 @@ model WishStatusHistory {
   user       User       @relation(fields: [changedBy], references: [id], onDelete: Cascade)
 
   @@index([wishId, changedAt])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  coupleId  String
+  userId    String?
+  type      String
+  title     String
+  body      String?
+  data      Json?
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+  couple    Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([coupleId, createdAt])
+  @@index([userId, readAt])
 }

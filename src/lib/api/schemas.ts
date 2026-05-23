@@ -5,6 +5,13 @@ export const idSchema = z.string().min(1).max(128);
 export const dateSchema = z.coerce.date();
 
 export const optionalDateSchema = z.preprocess(
+  (value) => (value === "" ? undefined : value),
+  z.coerce.date().nullable().optional()
+);
+
+/** For required-date fields that are optional in update schemas (e.g. happenedAt, checkedAt).
+ *  Treats null as "don't update" (undefined) to avoid coercing to Unix epoch. */
+export const optionalRequiredDateSchema = z.preprocess(
   (value) => (value === "" || value === null ? undefined : value),
   z.coerce.date().optional()
 );
@@ -67,7 +74,7 @@ export const anniversaryCreateSchema = z.object({
 export const anniversaryUpdateSchema = z.object({
   userId: idSchema.optional(),
   title: z.string().min(1).max(80).optional(),
-  happenedAt: dateSchema.optional(),
+  happenedAt: optionalRequiredDateSchema,
   remindDays: z.array(z.number().int().min(0).max(365)).max(10).optional(),
   note: z.string().max(1000).nullable().optional()
 });
@@ -89,7 +96,7 @@ export const diaryUpdateSchema = z.object({
   title: z.string().min(1).max(120).optional(),
   content: z.string().min(1).max(20000).optional(),
   visibility: z.enum(["PRIVATE", "PARTNER", "SHARED"]).optional(),
-  happenedAt: dateSchema.optional()
+  happenedAt: optionalRequiredDateSchema
 });
 
 export const moodCreateSchema = z.object({
@@ -109,7 +116,7 @@ export const moodUpdateSchema = z.object({
   stressLevel: z.number().int().min(1).max(5).optional(),
   carePreference: z.string().max(300).nullable().optional(),
   note: z.string().max(1000).nullable().optional(),
-  checkedAt: dateSchema.optional()
+  checkedAt: optionalRequiredDateSchema
 });
 
 export const wishCreateSchema = z.object({
@@ -159,5 +166,5 @@ export const timeCapsuleUpdateSchema = z.object({
   userId: idSchema.optional(),
   title: z.string().min(1).max(120).optional(),
   content: z.string().min(1).max(20000).optional(),
-  unlockAt: dateSchema.optional()
+  unlockAt: optionalRequiredDateSchema
 });

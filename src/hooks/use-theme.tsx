@@ -10,30 +10,35 @@ type ThemeContextValue = {
   setTheme: (theme: Theme) => void;
 };
 
+const STORAGE_KEY = "line-dog-theme";
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
+function applyTheme(t: Theme) {
+  document.documentElement.setAttribute("data-theme", t);
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("blue");
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window === "undefined") return "blue";
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved === "pink" ? "pink" : "blue";
+  });
 
   useEffect(() => {
-    const saved = localStorage.getItem("line-dog-theme") as Theme | null;
-    if (saved === "blue" || saved === "pink") {
-      document.documentElement.setAttribute("data-theme", saved);
-      queueMicrotask(() => setThemeState(saved));
-    }
-  }, []);
+    applyTheme(theme);
+  }, [theme]);
 
   const setTheme = useCallback((t: Theme) => {
     setThemeState(t);
-    localStorage.setItem("line-dog-theme", t);
-    document.documentElement.setAttribute("data-theme", t);
+    localStorage.setItem(STORAGE_KEY, t);
+    applyTheme(t);
   }, []);
 
   const toggleTheme = useCallback(() => {
     setThemeState((prev) => {
-      const next = prev === "blue" ? "pink" : "blue";
-      localStorage.setItem("line-dog-theme", next);
-      document.documentElement.setAttribute("data-theme", next);
+      const next: Theme = prev === "blue" ? "pink" : "blue";
+      localStorage.setItem(STORAGE_KEY, next);
+      applyTheme(next);
       return next;
     });
   }, []);

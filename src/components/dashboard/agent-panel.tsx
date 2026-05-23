@@ -63,7 +63,7 @@ export function AgentPanel({ coupleId }: { coupleId?: string }) {
 
         <form className="mt-3 space-y-3" onSubmit={handleSubmit}>
           <textarea
-            className="min-h-20 w-full resize-none rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3 text-sm outline-none backdrop-blur-sm transition-all duration-200 focus:border-[var(--primary)] focus:ring-2 focus:ring-[rgba(232,160,176,0.15)]"
+            className="min-h-20 w-full resize-none rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3 text-sm outline-none backdrop-blur-sm transition-all duration-200 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--nav-active)]"
             maxLength={500}
             onChange={(e) => setMessage(e.target.value)}
             value={message}
@@ -84,7 +84,7 @@ export function AgentPanel({ coupleId }: { coupleId?: string }) {
             transition={{ duration: 0.3 }}
           >
             <p className="text-sm leading-6">{result?.reply ?? "今晚先让对方卸下压力：一句短关心，一件小帮忙，再留出安静陪伴的时间。"}</p>
-            {result?.safetyNote && <p className="mt-3 rounded-xl bg-[rgba(232,160,176,0.08)] p-3 text-xs text-[var(--primary-dark)]">{result.safetyNote}</p>}
+            {result?.safetyNote && <p className="mt-3 rounded-xl bg-[var(--danger-bg)] p-3 text-xs text-[var(--primary-dark)]">{result.safetyNote}</p>}
             <div className="mt-3 flex flex-wrap gap-1.5">
               {(result?.quickActions ?? ["生成关心提醒", "创建今晚小任务", "记录今日心情"]).map((a) => <Badge key={a} tone="neutral">{a}</Badge>)}
             </div>
