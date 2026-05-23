@@ -12,6 +12,7 @@ import { useCouple, CoupleProvider } from "@/hooks/use-couple";
 import { useTheme } from "@/hooks/use-theme";
 import { CoupleSetup } from "@/components/couple/couple-setup";
 import { Button } from "@/components/ui/button";
+import { Avatar } from "@/components/ui/avatar";
 
 function DashboardShell({ children }: { children: React.ReactNode }) {
   const { user, isLoading: authLoading, logout } = useAuth();
@@ -60,9 +61,11 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
           <div className="mb-8">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary)] text-lg font-bold text-white">
-                  {couple.members[0]?.user.name.charAt(0) ?? "?"}
-                </div>
+                <Avatar
+                  name={couple.members[0]?.user.name ?? "?"}
+                  size="lg"
+                  src={couple.members[0]?.user.avatarUrl}
+                />
                 <motion.div
                   animate={{ scale: [1, 1.15, 1] }}
                   className="absolute -bottom-0.5 -right-0.5 flex size-5 items-center justify-center rounded-full bg-[var(--primary)]"
@@ -72,9 +75,11 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
                 </motion.div>
               </div>
               {couple.members[1] && (
-                <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-[var(--secondary-light)] to-[var(--secondary)] text-lg font-bold text-white">
-                  {couple.members[1].user.name.charAt(0)}
-                </div>
+                <Avatar
+                  name={couple.members[1].user.name}
+                  size="lg"
+                  src={couple.members[1].user.avatarUrl}
+                />
               )}
             </div>
             <h2 className="mt-3 text-lg font-bold" style={{ fontFamily: "var(--font-serif)" }}>{couple.title}</h2>
@@ -178,13 +183,17 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
                 </div>
 
                 <div className="mb-6 flex items-center gap-3">
-                  <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary)] text-lg font-bold text-white">
-                    {couple.members[0]?.user.name.charAt(0) ?? "?"}
-                  </div>
+                  <Avatar
+                    name={couple.members[0]?.user.name ?? "?"}
+                    size="lg"
+                    src={couple.members[0]?.user.avatarUrl}
+                  />
                   {couple.members[1] && (
-                    <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-[var(--secondary-light)] to-[var(--secondary)] text-lg font-bold text-white">
-                      {couple.members[1].user.name.charAt(0)}
-                    </div>
+                    <Avatar
+                      name={couple.members[1].user.name}
+                      size="lg"
+                      src={couple.members[1].user.avatarUrl}
+                    />
                   )}
                 </div>
                 <p className="mb-6 text-sm text-[var(--muted-foreground)]">{couple.title}</p>

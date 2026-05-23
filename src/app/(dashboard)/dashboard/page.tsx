@@ -9,6 +9,7 @@ import { useDashboard } from "@/hooks/use-dashboard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Avatar } from "@/components/ui/avatar";
 import { AgentPanel } from "@/components/dashboard/agent-panel";
 
 function getNextOccurrence(happenedAt: string) {
@@ -52,12 +53,13 @@ export default function DashboardPage() {
           <div className="flex flex-col items-center gap-6 sm:flex-row">
             {/* Couple Avatars with Heart */}
             <div className="flex items-center gap-3">
-              <motion.div
-                animate={{ x: [0, 4, 0] }}
-                className="flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary)] text-2xl font-bold text-white shadow-lg"
-                transition={{ duration: 3, repeat: Infinity }}
-              >
-                {couple?.members[0]?.user.name.charAt(0) ?? "?"}
+              <motion.div animate={{ x: [0, 4, 0] }} transition={{ duration: 3, repeat: Infinity }}>
+                <Avatar
+                  className="shadow-lg"
+                  name={couple?.members[0]?.user.name ?? "?"}
+                  size="xl"
+                  src={couple?.members[0]?.user.avatarUrl}
+                />
               </motion.div>
               <motion.div
                 animate={{ scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] }}
@@ -66,12 +68,13 @@ export default function DashboardPage() {
                 <Heart className="size-8 text-[var(--primary)]" fill="var(--primary)" />
               </motion.div>
               {couple?.members[1] && (
-                <motion.div
-                  animate={{ x: [0, -4, 0] }}
-                  className="flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-[var(--secondary-light)] to-[var(--secondary)] text-2xl font-bold text-white shadow-lg"
-                  transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                >
-                  {couple.members[1].user.name.charAt(0)}
+                <motion.div animate={{ x: [0, -4, 0] }} transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}>
+                  <Avatar
+                    className="shadow-lg"
+                    name={couple.members[1].user.name}
+                    size="xl"
+                    src={couple.members[1].user.avatarUrl}
+                  />
                 </motion.div>
               )}
             </div>
