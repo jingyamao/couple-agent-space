@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { handleApiError, ok } from "@/lib/api/http";
 import { getRequesterId, requireCoupleMember } from "@/lib/api/guards";
+import { signMembers, signPhotoUrl, signImageUrl, signUserAvatar } from "@/lib/services/url-signer";
 
 type RouteContext = {
   params: Promise<{
@@ -82,10 +83,11 @@ export async function GET(request: Request, context: RouteContext) {
     return ok({
       couple: {
         ...couple,
-        daysTogether: getDaysTogether(couple.startedAt)
+        daysTogether: getDaysTogether(couple.startedAt),
+        members: signMembers(couple.members)
       },
       anniversaries,
-      moodCheckIns,
+      moodCheckIns: moodCheckIns.map(m => ({ ...m, user: m.user ? signUserAvatar(m.user) : m.user })),
       diaryEntries,
       wishes: {
         items: wishes,
@@ -94,7 +96,7 @@ export async function GET(request: Request, context: RouteContext) {
             ? 0
             : Math.round((completedWishes / wishes.length) * 100)
       },
-      photos,
+      photos: photos.map(signPhotoUrl),
       timeCapsules
     });
   } catch (error) {

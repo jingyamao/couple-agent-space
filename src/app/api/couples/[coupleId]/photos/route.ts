@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { created, handleApiError, ok, parseJson } from "@/lib/api/http";
 import { getRequesterId, requireCoupleMember, resolveActorId } from "@/lib/api/guards";
 import { photoCreateSchema } from "@/lib/api/schemas";
+import { signPhotoUrl } from "@/lib/services/url-signer";
 
 type RouteContext = {
   params: Promise<{
@@ -21,7 +22,7 @@ export async function GET(request: Request, context: RouteContext) {
       take: 100
     });
 
-    return ok(photos);
+    return ok(photos.map(signPhotoUrl));
   } catch (error) {
     return handleApiError(error);
   }

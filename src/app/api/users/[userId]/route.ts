@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { handleApiError, noContent, ok, parseJson } from "@/lib/api/http";
 import { requireSelf } from "@/lib/api/guards";
 import { userUpdateSchema } from "@/lib/api/schemas";
+import { signUserAvatar } from "@/lib/services/url-signer";
 
 type RouteContext = {
   params: Promise<{
@@ -24,7 +25,7 @@ export async function GET(_request: Request, context: RouteContext) {
       }
     });
 
-    return ok(user);
+    return ok(user ? signUserAvatar(user) : null);
   } catch (error) {
     return handleApiError(error);
   }
@@ -40,7 +41,7 @@ export async function PATCH(request: Request, context: RouteContext) {
       data: input
     });
 
-    return ok(user);
+    return ok(signUserAvatar(user));
   } catch (error) {
     return handleApiError(error);
   }

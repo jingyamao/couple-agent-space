@@ -72,14 +72,23 @@ export function generateOssKey(prefix: string, filename: string): string {
 export function generateSignedUrl(key: string, expiresIn = 3600): string {
   if (!isOssConfigured()) return "";
 
-  const date = new Date();
-  const expiration = new Date(date.getTime() + expiresIn * 1000).toISOString();
+  const epoch = Math.floor(Date.now() / 1000) + expiresIn;
   const resource = `/${BUCKET}/${key}`;
-  const stringToSign = `GET\n\n\n${Math.floor(date.getTime() / 1000) + expiresIn}\n${resource}`;
+  const stringToSign = `GET\n\n\n${epoch}\n${resource}`;
   const signature = crypto
     .createHmac("sha1", ACCESS_KEY_SECRET)
     .update(stringToSign)
     .digest("base64");
 
-  return `https://${BUCKET}.${REGION}.aliyuncs.com/${key}?OSSAccessKeyId=${ACCESS_KEY_ID}&Expires=${Math.floor(date.getTime() / 1000) + expiresIn}&Signature=${encodeURIComponent(signature)}`;
+  return `https://${BUCKET}.${REGION}.aliyuncs.com/${key}?OSSAccessKeyId=${ACCESS_KEY_ID}&Expires=${epoch}&Signature=${encodeURIComponent(signature)}`;
+}
+
+export function signOssUrl(url: string, expiresIn = 3600): string {
+  if (!url || !isOssConfigured()) return url;
+
+  const prefix = `https://${BUCKET}.${REGION}.aliyuncs.com/`;
+  if (!url.startsWith(prefix)) return url;
+
+  const key = url.slice(prefix.length);
+  return generateSignedUrl(key, expiresIn);
 }

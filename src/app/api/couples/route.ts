@@ -3,6 +3,7 @@ import { createUniqueInviteCode } from "@/lib/api/invite-code";
 import { created, handleApiError, ok, parseJson } from "@/lib/api/http";
 import { getRequesterId, requireUser, resolveActorId } from "@/lib/api/guards";
 import { coupleCreateSchema } from "@/lib/api/schemas";
+import { signMembers } from "@/lib/services/url-signer";
 
 export async function GET(request: Request) {
   try {
@@ -25,7 +26,10 @@ export async function GET(request: Request) {
       orderBy: { joinedAt: "desc" }
     });
 
-    return ok(memberships.map((membership) => membership.couple));
+    return ok(memberships.map((m) => ({
+      ...m.couple,
+      members: signMembers(m.couple.members)
+    })));
   } catch (error) {
     return handleApiError(error);
   }

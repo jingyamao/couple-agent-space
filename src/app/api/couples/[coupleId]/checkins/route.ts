@@ -2,6 +2,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { created, handleApiError, ok, parseJson } from "@/lib/api/http";
 import { getAuthenticatedUser, requireCoupleMember } from "@/lib/api/guards";
+import { signImageUrl, signUserAvatar } from "@/lib/services/url-signer";
 
 type RouteContext = {
   params: Promise<{ coupleId: string }>;
@@ -31,7 +32,7 @@ export async function GET(request: Request, context: RouteContext) {
       take: 100
     });
 
-    return ok(checkins);
+    return ok(checkins.map(c => signImageUrl({ ...c, user: signUserAvatar(c.user) })));
   } catch (error) {
     return handleApiError(error);
   }
@@ -60,7 +61,7 @@ export async function POST(request: Request, context: RouteContext) {
       include: { user: { select: { id: true, name: true, avatarUrl: true } } }
     });
 
-    return created(checkin);
+    return created(signImageUrl({ ...checkin, user: signUserAvatar(checkin.user) }));
   } catch (error) {
     return handleApiError(error);
   }
