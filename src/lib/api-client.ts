@@ -22,14 +22,18 @@ export async function apiClient<T>(
 ): Promise<T> {
   const { method = "GET", body, headers: extraHeaders } = options ?? {};
 
+  const isFormData = body instanceof FormData;
+
+  const headers: Record<string, string> = { ...extraHeaders };
+  if (!isFormData) {
+    headers["Content-Type"] = "application/json";
+  }
+
   const response = await fetch(path, {
     method,
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      ...extraHeaders
-    },
-    body: body !== undefined ? JSON.stringify(body) : undefined
+    headers,
+    body: isFormData ? body : body !== undefined ? JSON.stringify(body) : undefined
   });
 
   const payload = await response.json().catch(() => null);

@@ -1,23 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Copy, Heart, Loader2, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCouple } from "@/hooks/use-couple";
+import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/components/ui/toast";
+import { apiClient } from "@/lib/api-client";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 export default function SettingsPage() {
-  const { couple } = useCouple(); const { toast } = useToast();
+  const { couple, refresh: refreshCouple } = useCouple();
+  const { user, refresh: refreshUser } = useAuth();
+  const { toast } = useToast();
   const [copied, setCopied] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const [name, setName] = useState(user?.name ?? "");
+  const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl ?? "");
 
   function copyCode() {
     if (!couple) return;
     navigator.clipboard.writeText(couple.inviteCode);
     setCopied(true); toast("success", "邀请码已复制");
     setTimeout(() => setCopied(false), 2000);
+  }
+
+  async function handleSaveProfile(e: FormEvent) {
+    e.preventDefault();
+    if (!user) return;
+    setIsSaving(true);
+    try {
+      await apiClient(`/api/users/${user.id}`, {
+        method: "PATCH",
+        body: { name: name || undefined, avatarUrl: avatarUrl || null }
+      });
+      await refreshUser();
+      toast("success", "资料已更新");
+    } catch {
+      toast("error", "更新失败");
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   if (!couple) return <div className="flex items-center justify-center py-20"><Loader2 className="size-6 animate-spin text-[var(--muted-foreground)]" /></div>;
@@ -56,6 +84,34 @@ export default function SettingsPage() {
       </motion.div>
 
       <div className="grid gap-6 lg:grid-cols-2">
+        {/* User Profile */}
+        <motion.div {...fade} transition={{ duration: 0.5, delay: 0.05 }}>
+          <Card>
+            <CardHeader>
+              <h2 className="text-lg font-bold" style={{ fontFamily: "var(--font-serif)" }}>个人资料</h2>
+            </CardHeader>
+            <CardContent>
+              <form className="space-y-4" onSubmit={handleSaveProfile}>
+                <div className="flex items-center gap-4">
+                  <ImageUpload
+                    aspectRatio="square"
+                    className="size-20 shrink-0"
+                    onChange={setAvatarUrl}
+                    prefix="avatars"
+                    value={avatarUrl}
+                  />
+                  <div className="flex-1">
+                    <Input label="昵称" name="name" onChange={(e) => setName(e.target.value)} value={name} />
+                  </div>
+                </div>
+                <Button disabled={isSaving} type="submit">
+                  {isSaving ? <Loader2 className="size-4 animate-spin" /> : "保存资料"}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </motion.div>
+
         {/* Invite Code */}
         <motion.div {...fade} transition={{ duration: 0.5, delay: 0.1 }}>
           <Card>
@@ -73,11 +129,11 @@ export default function SettingsPage() {
         </motion.div>
 
         {/* Members */}
-        <motion.div {...fade} transition={{ duration: 0.5, delay: 0.15 }}>
+        <motion.div {...fade} className="lg:col-span-2" transition={{ duration: 0.5, delay: 0.15 }}>
           <Card>
             <CardHeader><h2 className="text-lg font-bold" style={{ fontFamily: "var(--font-serif)" }}>成员</h2></CardHeader>
             <CardContent>
-              <div className="space-y-3">
+              <div className="grid gap-3 sm:grid-cols-2">
                 {couple.members.map((m) => (
                   <div className="flex items-center gap-3 rounded-2xl bg-[var(--surface)] p-4" key={m.id}>
                     <div className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary)] text-sm font-bold text-white">{m.user.name.charAt(0)}</div>

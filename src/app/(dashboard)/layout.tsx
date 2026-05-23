@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import {
-  BookHeart, CalendarHeart, Heart, Home, LogOut, Palette, Settings, Sparkles, Star, X
+  BookHeart, CalendarHeart, Camera, Heart, Home, LogOut, MapPin, Palette, Settings, Sparkles, Star, X
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/use-auth";
@@ -44,6 +44,8 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
     { href: "/moods", label: "心情", icon: Sparkles },
     { href: "/anniversaries", label: "纪念日", icon: CalendarHeart },
     { href: "/wishes", label: "愿望", icon: Star },
+    { href: "/album", label: "相册", icon: Camera },
+    { href: "/checkins", label: "打卡", icon: MapPin },
     { href: "/settings", label: "设置", icon: Settings }
   ];
 
@@ -118,7 +120,7 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
       {/* Mobile/Tablet Bottom Nav */}
       <div className="fixed bottom-0 left-0 right-0 z-40 overflow-hidden lg:hidden">
         <div className="glass mx-2 mb-2 flex items-center justify-around rounded-2xl px-1 py-2 sm:mx-3 sm:mb-3 sm:px-2">
-          {navItems.slice(0, 5).map((item) => {
+          {navItems.slice(0, 4).map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
             return (
@@ -188,9 +190,14 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
                 <p className="mb-6 text-sm text-[var(--muted-foreground)]">{couple.title}</p>
 
                 <nav className="flex-1 space-y-1">
-                  <Link className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-[var(--muted-foreground)] hover:bg-[var(--surface)]" href="/settings" onClick={() => setSidebarOpen(false)}>
-                    <Settings className="size-5" /> 设置
-                  </Link>
+                  {navItems.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <Link className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-[var(--muted-foreground)] hover:bg-[var(--surface)]" href={item.href} key={item.href} onClick={() => setSidebarOpen(false)}>
+                        <Icon className="size-5" /> {item.label}
+                      </Link>
+                    );
+                  })}
                 </nav>
 
                 <div className="space-y-2 border-t border-[var(--border)] pt-4">
