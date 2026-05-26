@@ -32,6 +32,7 @@ export async function POST(request: Request) {
       {
         data: {
           user,
+          token,
           session: {
             expiresAt: session.expiresAt
           }

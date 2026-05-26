@@ -1,0 +1,613 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A100000001 /* CoupleAgentSpaceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000001; };
+		A100000002 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000002; };
+		A100000003 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000003; };
+		A100000004 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000004; };
+		A100000005 /* Color+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000005; };
+		A100000006 /* Font+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000006; };
+		A100000007 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000007; };
+		A100000008 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000008; };
+		A100000009 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000009; };
+		A10000000A /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000A; };
+		A10000000B /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000B; };
+		A10000000C /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000C; };
+		A10000000D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000D; };
+		A10000000E /* Couple.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000E; };
+		A10000000F /* DiaryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000F; };
+		A100000010 /* MoodCheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000010; };
+		A100000011 /* Anniversary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000011; };
+		A100000012 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000012; };
+		A100000013 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000013; };
+		A100000014 /* TimeCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000014; };
+		A100000015 /* CheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000015; };
+		A100000016 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000016; };
+		A100000017 /* AgentMemory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000017; };
+		A100000018 /* DashboardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000018; };
+		A100000019 /* CASButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000019; };
+		A10000001A /* CASCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001A; };
+		A10000001B /* CASTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001B; };
+		A10000001C /* CASSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001C; };
+		A10000001D /* CASBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001D; };
+		A10000001E /* CASAvatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001E; };
+		A10000001F /* CASProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000001F; };
+		A100000020 /* CASToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000020; };
+		A100000021 /* CASDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000021; };
+		A100000022 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000022; };
+		A100000023 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000023; };
+		A100000024 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000024; };
+		A100000025 /* CoupleSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000025; };
+		A100000026 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000026; };
+		A100000027 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000027; };
+		A100000028 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000028; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A200000001 /* CoupleAgentSpaceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoupleAgentSpaceApp.swift; sourceTree = "<group>"; };
+		A200000002 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		A200000003 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		A200000004 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		A200000005 /* Color+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Theme.swift"; sourceTree = "<group>"; };
+		A200000006 /* Font+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Theme.swift"; sourceTree = "<group>"; };
+		A200000007 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		A200000008 /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
+		A200000009 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		A20000000A /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		A20000000B /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		A20000000C /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
+		A20000000D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		A20000000E /* Couple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Couple.swift; sourceTree = "<group>"; };
+		A20000000F /* DiaryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryEntry.swift; sourceTree = "<group>"; };
+		A200000010 /* MoodCheckIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodCheckIn.swift; sourceTree = "<group>"; };
+		A200000011 /* Anniversary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anniversary.swift; sourceTree = "<group>"; };
+		A200000012 /* Wish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wish.swift; sourceTree = "<group>"; };
+		A200000013 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		A200000014 /* TimeCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeCapsule.swift; sourceTree = "<group>"; };
+		A200000015 /* CheckIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckIn.swift; sourceTree = "<group>"; };
+		A200000016 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		A200000017 /* AgentMemory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentMemory.swift; sourceTree = "<group>"; };
+		A200000018 /* DashboardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardData.swift; sourceTree = "<group>"; };
+		A200000019 /* CASButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CASButton.swift; sourceTree = "<group>"; };
+		A20000001A /* CASCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CASCard.swift; sourceTree = "<group>"; };
+		A20000001B /* CASTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CASTextField.swift; sourceTree = "<group>"; };
+		A20000001C /* CASSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CASSelector.swift; sourceTree = "<group>"; };
+		A20000001D /* CASBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CASBadge.swift; sourceTree = "<group>"; };
+		A20000001E /* CASAvatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CASAvatar.swift; sourceTree = "<group>"; };
+		A20000001F /* CASProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CASProgress.swift; sourceTree = "<group>"; };
+		A200000020 /* CASToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CASToast.swift; sourceTree = "<group>"; };
+		A200000021 /* CASDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CASDialog.swift; sourceTree = "<group>"; };
+		A200000022 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		A200000023 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		A200000024 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		A200000025 /* CoupleSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoupleSetupView.swift; sourceTree = "<group>"; };
+		A200000026 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		A200000027 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		A200000028 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		A200000029 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A20000002A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A2000000FF /* CoupleAgentSpace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoupleAgentSpace.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A300000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A400000001 = {
+			isa = PBXGroup;
+			children = (
+				A400000002 /* CoupleAgentSpace */,
+				A40000000C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A400000002 /* CoupleAgentSpace */ = {
+			isa = PBXGroup;
+			children = (
+				A400000003 /* App */,
+				A400000004 /* Core */,
+				A400000008 /* Models */,
+				A400000009 /* ViewModels */,
+				A40000000B /* Views */,
+				A400000005 /* Theme */,
+				A400000006 /* Resources */,
+			);
+			path = CoupleAgentSpace;
+			sourceTree = "<group>";
+		};
+		A400000003 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A200000001 /* CoupleAgentSpaceApp.swift */,
+				A200000002 /* AppState.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A400000004 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				A40000000D /* Networking */,
+				A40000000E /* Auth */,
+				A40000000F /* Utils */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		A400000005 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				A200000003 /* Theme.swift */,
+				A200000004 /* ThemeManager.swift */,
+				A200000005 /* Color+Theme.swift */,
+				A200000006 /* Font+Theme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		A400000006 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A200000029 /* Info.plist */,
+				A20000002A /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A400000008 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000D /* User.swift */,
+				A20000000E /* Couple.swift */,
+				A20000000F /* DiaryEntry.swift */,
+				A200000010 /* MoodCheckIn.swift */,
+				A200000011 /* Anniversary.swift */,
+				A200000012 /* Wish.swift */,
+				A200000013 /* Photo.swift */,
+				A200000014 /* TimeCapsule.swift */,
+				A200000015 /* CheckIn.swift */,
+				A200000016 /* Notification.swift */,
+				A200000017 /* AgentMemory.swift */,
+				A200000018 /* DashboardData.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A400000009 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A400000010 /* Auth */,
+				A400000011 /* Dashboard */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A40000000B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A400000012 /* Components */,
+				A400000013 /* Auth */,
+				A400000014 /* Main */,
+				A400000015 /* Dashboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A40000000C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000FF /* CoupleAgentSpace.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A40000000D /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				A200000007 /* APIError.swift */,
+				A200000008 /* APIEndpoint.swift */,
+				A200000009 /* APIClient.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		A40000000E /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000A /* KeychainService.swift */,
+				A20000000B /* AuthManager.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		A40000000F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000C /* DateUtils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A400000010 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				A200000027 /* LoginViewModel.swift */,
+				A200000028 /* RegisterViewModel.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		A400000011 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		A400000012 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				A200000019 /* CASButton.swift */,
+				A20000001A /* CASCard.swift */,
+				A20000001B /* CASTextField.swift */,
+				A20000001C /* CASSelector.swift */,
+				A20000001D /* CASBadge.swift */,
+				A20000001E /* CASAvatar.swift */,
+				A20000001F /* CASProgress.swift */,
+				A200000020 /* CASToast.swift */,
+				A200000021 /* CASDialog.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		A400000013 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				A200000022 /* LoginView.swift */,
+				A200000023 /* RegisterView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		A400000014 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				A200000024 /* MainTabView.swift */,
+				A200000025 /* CoupleSetupView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		A400000015 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				A200000026 /* DashboardView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A500000001 /* CoupleAgentSpace */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A700000003 /* Build configuration list for PBXNativeTarget "CoupleAgentSpace" */;
+			buildPhases = (
+				A600000001 /* Sources */,
+				A300000001 /* Frameworks */,
+				A600000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CoupleAgentSpace;
+			productName = CoupleAgentSpace;
+			productReference = A2000000FF /* CoupleAgentSpace.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A800000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = A700000001 /* Build configuration list for PBXProject "CoupleAgentSpace" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = "zh-Hans";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				"zh-Hans",
+				Base,
+			);
+			mainGroup = A400000001;
+			productRefGroup = A40000000C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A500000001 /* CoupleAgentSpace */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A600000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A600000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A100000001 /* CoupleAgentSpaceApp.swift in Sources */,
+				A100000002 /* AppState.swift in Sources */,
+				A100000003 /* Theme.swift in Sources */,
+				A100000004 /* ThemeManager.swift in Sources */,
+				A100000005 /* Color+Theme.swift in Sources */,
+				A100000006 /* Font+Theme.swift in Sources */,
+				A100000007 /* APIError.swift in Sources */,
+				A100000008 /* APIEndpoint.swift in Sources */,
+				A100000009 /* APIClient.swift in Sources */,
+				A10000000A /* KeychainService.swift in Sources */,
+				A10000000B /* AuthManager.swift in Sources */,
+				A10000000C /* DateUtils.swift in Sources */,
+				A10000000D /* User.swift in Sources */,
+				A10000000E /* Couple.swift in Sources */,
+				A10000000F /* DiaryEntry.swift in Sources */,
+				A100000010 /* MoodCheckIn.swift in Sources */,
+				A100000011 /* Anniversary.swift in Sources */,
+				A100000012 /* Wish.swift in Sources */,
+				A100000013 /* Photo.swift in Sources */,
+				A100000014 /* TimeCapsule.swift in Sources */,
+				A100000015 /* CheckIn.swift in Sources */,
+				A100000016 /* Notification.swift in Sources */,
+				A100000017 /* AgentMemory.swift in Sources */,
+				A100000018 /* DashboardData.swift in Sources */,
+				A100000019 /* CASButton.swift in Sources */,
+				A10000001A /* CASCard.swift in Sources */,
+				A10000001B /* CASTextField.swift in Sources */,
+				A10000001C /* CASSelector.swift in Sources */,
+				A10000001D /* CASBadge.swift in Sources */,
+				A10000001E /* CASAvatar.swift in Sources */,
+				A10000001F /* CASProgress.swift in Sources */,
+				A100000020 /* CASToast.swift in Sources */,
+				A100000021 /* CASDialog.swift in Sources */,
+				A100000022 /* LoginView.swift in Sources */,
+				A100000023 /* RegisterView.swift in Sources */,
+				A100000024 /* MainTabView.swift in Sources */,
+				A100000025 /* CoupleSetupView.swift in Sources */,
+				A100000026 /* DashboardView.swift in Sources */,
+				A100000027 /* LoginViewModel.swift in Sources */,
+				A100000028 /* RegisterViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A900000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A900000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A900000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CoupleAgentSpace/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "情侣空间";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.couple-agent-space.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A900000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CoupleAgentSpace/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "情侣空间";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.couple-agent-space.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A700000001 /* Build configuration list for PBXProject "CoupleAgentSpace" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A900000001 /* Debug */,
+				A900000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A700000003 /* Build configuration list for PBXNativeTarget "CoupleAgentSpace" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A900000003 /* Debug */,
+				A900000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A800000001 /* Project object */;
+}

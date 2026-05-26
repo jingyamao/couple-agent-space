@@ -70,8 +70,18 @@ export async function createSession(
 }
 
 export async function getSessionFromRequest(request: Request) {
+  // Try Cookie first (web), then Bearer token (iOS/mobile)
+  let token: string | undefined;
+
   const cookies = parseCookieHeader(request.headers.get("cookie"));
-  const token = cookies.get(AUTH_COOKIE_NAME);
+  token = cookies.get(AUTH_COOKIE_NAME);
+
+  if (!token) {
+    const authHeader = request.headers.get("authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      token = authHeader.slice(7);
+    }
+  }
 
   if (!token) {
     return null;

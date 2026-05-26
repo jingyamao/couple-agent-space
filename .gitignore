@@ -15,3 +15,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 src/generated/prisma/
+
+# iOS / Xcode
+ios/**/*.xcodeproj/xcuserdata/
+ios/**/*.xcodeproj/project.xcworkspace/xcuserdata/
+ios/**/xcuserdata/
+ios/**/*.xcworkspace/xcuserdata/
+ios/**/DerivedData/
+ios/**/*.pbxuser
+ios/**/*.perspectivev3
+ios/**/.DS_Store
